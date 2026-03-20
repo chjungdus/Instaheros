@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instaheros – 20 Hero Animations</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+  }
+
+  #stage {
+    position: relative;
+    width: 405px;
+    height: 720px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 0 80px rgba(255,255,255,0.08);
+  }
+
+  .hero {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: hidden;
+  }
+  .hero.active { display: block; }
+
+  .hero img.bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 48px 32px;
+  }
+
+  .hero .tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.05;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+  }
+
+  .hero p {
+    margin-top: 14px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  /* NAV */
+  #nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    align-items: center;
+  }
+  #nav button {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-size: 13px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: background .2s;
+  }
+  #nav button:hover { background: rgba(255,255,255,0.3); }
+  #counter {
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  /* PROGRESS BAR */
+  #progress-wrap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 50;
+    background: rgba(255,255,255,0.1);
+  }
+  #progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: none;
+  }
+
+  /* ===================== HERO 1 – ZOOM FOREST ===================== */
+  #h1 .bg { animation: h1-zoom 5s ease-in-out forwards; }
+  @keyframes h1-zoom {
+    0%   { transform: scale(1); }
+    100% { transform: scale(1.18); }
+  }
+  #h1 .overlay { background: linear-gradient(to top, rgba(0,20,0,0.85) 0%, transparent 60%); }
+  #h1 h1 { animation: fadeUp 1s .3s both; color: #a8ff78; }
+  #h1 .tag { animation: fadeUp 1s .1s both; }
+  #h1 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 2 – CITY PARALLAX ===================== */
+  #h2 .bg { animation: h2-slide 5s ease-out forwards; }
+  @keyframes h2-slide {
+    0%   { transform: translateY(0) scale(1.1); }
+    100% { transform: translateY(-5%) scale(1.05); }
+  }
+  #h2 .overlay { background: linear-gradient(to top, rgba(0,0,50,0.9) 0%, transparent 55%); }
+  #h2 h1 { animation: slideLeft 1s .4s both; }
+  #h2 .tag, #h2 p { animation: fadeUp 1s .2s both; }
+
+  /* ===================== HERO 3 – FASHION CURTAIN ===================== */
+  #h3 .curtain {
+    position: absolute;
+    inset: 0;
+    background: #1a0a2e;
+    transform-origin: top;
+    animation: curtainOpen 1.2s .2s cubic-bezier(.77,0,.18,1) forwards;
+  }
+  @keyframes curtainOpen {
+    0%   { transform: scaleY(1); }
+    100% { transform: scaleY(0); }
+  }
+  #h3 .bg { animation: h3-zoom 5s ease-in-out forwards; }
+  @keyframes h3-zoom {
+    0%   { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  #h3 .overlay { background: linear-gradient(135deg, rgba(90,0,50,0.6) 0%, rgba(0,0,0,0.7) 100%); }
+  #h3 h1 { animation: fadeUp 1s .8s both; font-style: italic; }
+  #h3 .tag, #h3 p { animation: fadeUp 1s 1s both; }
+
+  /* ===================== HERO 4 – FOOD MACRO ===================== */
+  #h4 .bg { animation: h4-saturate 5s ease-in-out forwards; }
+  @keyframes h4-saturate {
+    0%   { transform: scale(1.15); filter: saturate(0.5) brightness(0.7); }
+    100% { transform: scale(1); filter: saturate(1.4) brightness(1); }
+  }
+  #h4 .overlay { background: linear-gradient(to top, rgba(80,20,0,0.85) 0%, transparent 50%); }
+  #h4 h1 { animation: fadeUp 1s .5s both; color: #ffb347; }
+  #h4 .tag, #h4 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 5 – TECH GLITCH ===================== */
+  #h5 .bg { animation: h5-glitch 5s steps(1) forwards; }
+  @keyframes h5-glitch {
+    0%   { transform: translate(0,0) scale(1.05); filter: hue-rotate(0deg) brightness(1.2); }
+    10%  { transform: translate(-3px, 2px) scale(1.05); filter: hue-rotate(90deg) brightness(1.5); }
+    20%  { transform: translate(3px,-2px) scale(1.05); filter: hue-rotate(180deg) brightness(0.9); }
+    30%  { transform: translate(0, 0) scale(1.05); filter: hue-rotate(0deg) brightness(1.2); }
+    100% { transform: translate(0,0) scale(1); filter: hue-rotate(0deg) brightness(1); }
+  }
+  #h5 .overlay { background: linear-gradient(to top, rgba(0,30,60,0.9) 0%, transparent 55%); }
+  #h5 h1 { animation: glitchText 5s forwards; color: #00ffcc; }
+  @keyframes glitchText {
+    0%,100% { text-shadow: none; }
+    10% { text-shadow: 3px 0 #ff0040, -3px 0 #00ffcc; }
+    20% { text-shadow: -3px 0 #ff0040, 3px 0 #00ffcc; }
+    30% { text-shadow: none; }
+  }
+  #h5 .tag, #h5 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 6 – OCEAN PAN ===================== */
+  #h6 .bg { animation: h6-pan 5s linear forwards; }
+  @keyframes h6-pan {
+    0%   { transform: translateX(-8%) scale(1.15); }
+    100% { transform: translateX(0%) scale(1.05); }
+  }
+  #h6 .overlay { background: linear-gradient(to top, rgba(0,40,80,0.85) 0%, transparent 50%); }
+  #h6 h1 { animation: fadeUp 1s .4s both; color: #7dd8ff; }
+  #h6 .tag, #h6 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 7 – FITNESS SHAKE ===================== */
+  #h7 .bg { animation: h7-power 5s ease-in-out forwards; }
+  @keyframes h7-power {
+    0%   { transform: scale(1.2); filter: contrast(1.4) brightness(0.8); }
+    15%  { transform: scale(1.19) translate(2px,-2px); }
+    16%  { transform: scale(1.18) translate(-2px,2px); }
+    17%  { transform: scale(1.18) translate(0,0); }
+    100% { transform: scale(1); filter: contrast(1.1) brightness(1); }
+  }
+  #h7 .overlay { background: linear-gradient(to top, rgba(60,0,0,0.9) 0%, transparent 50%); }
+  #h7 h1 { animation: fadeUp 1s .3s both; color: #ff4444; }
+  #h7 .tag, #h7 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 8 – LUXURY SHIMMER ===================== */
+  #h8 .bg { animation: h8-slow 5s ease-in-out forwards; }
+  @keyframes h8-slow {
+    0%   { transform: scale(1); filter: brightness(0.6) sepia(0.3); }
+    100% { transform: scale(1.08); filter: brightness(1) sepia(0); }
+  }
+  #h8 .shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,215,0,0.12) 50%, transparent 70%);
+    animation: shimmerMove 5s linear forwards;
+  }
+  @keyframes shimmerMove {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  #h8 .overlay { background: linear-gradient(to top, rgba(30,20,0,0.88) 0%, transparent 55%); }
+  #h8 h1 { animation: fadeUp 1s .5s both; color: #ffd700; }
+  #h8 .tag, #h8 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 9 – NIGHT PULSE ===================== */
+  #h9 .bg { animation: h9-pulse 5s ease-in-out forwards; }
+  @keyframes h9-pulse {
+    0%,100% { transform: scale(1); filter: brightness(0.7); }
+    50%      { transform: scale(1.05); filter: brightness(1.1); }
+  }
+  #h9 .overlay { background: linear-gradient(to top, rgba(10,0,30,0.9) 0%, transparent 50%); }
+  #h9 h1 { animation: fadeUp 1s .4s both; color: #e040fb; }
+  #h9 .tag, #h9 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 10 – MOUNTAIN REVEAL ===================== */
+  #h10 .reveal {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    animation: revealWipe 1.5s .1s cubic-bezier(.77,0,.18,1) forwards;
+    transform-origin: left;
+  }
+  @keyframes revealWipe {
+    0%   { transform: scaleX(1); }
+    100% { transform: scaleX(0); }
+  }
+  #h10 .bg { animation: h10-zoom 5s ease-in-out forwards; }
+  @keyframes h10-zoom {
+    0%   { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  #h10 .overlay { background: linear-gradient(to top, rgba(5,15,30,0.88) 0%, transparent 55%); }
+  #h10 h1 { animation: fadeUp 1s 1s both; color: #fff; }
+  #h10 .tag, #h10 p { animation: fadeUp 1s 1.2s both; }
+
+  /* ===================== HERO 11 – MINIMAL SLOW ZOOM ===================== */
+  #h11 .bg { animation: h11-slow 5s ease-in-out forwards; }
+  @keyframes h11-slow {
+    0%   { transform: scale(1); filter: brightness(0.8) grayscale(0.3); }
+    100% { transform: scale(1.12); filter: brightness(1.1) grayscale(0); }
+  }
+  #h11 .overlay { background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%); }
+  #h11 h1 { animation: fadeUp 1s .5s both; font-weight: 300; letter-spacing: 6px; font-size: 36px; }
+  #h11 .tag, #h11 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 12 – STREET GRUNGE ===================== */
+  #h12 .bg { animation: h12-slide 5s ease-out forwards; }
+  @keyframes h12-slide {
+    0%   { transform: translateY(6%) scale(1.1); filter: contrast(1.3) saturate(0.8); }
+    100% { transform: translateY(0) scale(1); filter: contrast(1) saturate(1); }
+  }
+  #h12 .overlay { background: linear-gradient(to top, rgba(10,5,0,0.92) 0%, transparent 50%); }
+  #h12 h1 { animation: slideLeft 1s .3s both; font-style: italic; color: #ff6b00; }
+  #h12 .tag, #h12 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 13 – BEAUTY SOFT BLUR ===================== */
+  #h13 .bg { animation: h13-bloom 5s ease-in-out forwards; }
+  @keyframes h13-bloom {
+    0%   { transform: scale(1.1); filter: blur(8px) brightness(0.8) saturate(1.5); }
+    40%  { filter: blur(0px) brightness(1) saturate(1.3); }
+    100% { transform: scale(1.04); filter: blur(0px) brightness(1.05) saturate(1.2); }
+  }
+  #h13 .overlay { background: linear-gradient(to top, rgba(50,0,30,0.8) 0%, transparent 55%); }
+  #h13 h1 { animation: fadeUp 1s .5s both; color: #ffb3de; font-style: italic; }
+  #h13 .tag, #h13 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 14 – MOTIVATION SUNRISE ===================== */
+  #h14 .bg { animation: h14-rise 5s ease-in-out forwards; }
+  @keyframes h14-rise {
+    0%   { transform: translateY(4%) scale(1.1); filter: brightness(0.5) saturate(2); }
+    100% { transform: translateY(0) scale(1); filter: brightness(1) saturate(1.3); }
+  }
+  #h14 .overlay { background: linear-gradient(to top, rgba(60,20,0,0.85) 0%, transparent 50%); }
+  #h14 h1 { animation: burnIn 5s forwards; color: #fff; }
+  @keyframes burnIn {
+    0%   { opacity: 0; text-shadow: 0 0 40px #ff8800; }
+    30%  { opacity: 1; text-shadow: 0 0 20px #ff8800; }
+    100% { text-shadow: 0 0 0px transparent; }
+  }
+  #h14 .tag, #h14 p { animation: fadeUp 1s .8s both; }
+
+  /* ===================== HERO 15 – BEACH COLORSHIFT ===================== */
+  #h15 .bg { animation: h15-color 5s ease-in-out forwards; }
+  @keyframes h15-color {
+    0%   { transform: scale(1.05); filter: hue-rotate(0deg) saturate(1.2); }
+    50%  { filter: hue-rotate(20deg) saturate(1.5); }
+    100% { transform: scale(1); filter: hue-rotate(0deg) saturate(1.2); }
+  }
+  #h15 .overlay { background: linear-gradient(to top, rgba(80,30,0,0.8) 0%, transparent 55%); }
+  #h15 h1 { animation: fadeUp 1s .5s both; color: #ffecb3; }
+  #h15 .tag, #h15 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 16 – DARK REVEAL FROM BLACK ===================== */
+  #h16 .bg { animation: h16-emerge 5s ease-in-out forwards; }
+  @keyframes h16-emerge {
+    0%   { transform: scale(1.15); filter: brightness(0) blur(15px); }
+    60%  { filter: brightness(1) blur(0px); }
+    100% { transform: scale(1.02); filter: brightness(0.9) blur(0px); }
+  }
+  #h16 .overlay { background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%); }
+  #h16 h1 { animation: fadeUp 1s 1.2s both; color: #ccc; font-weight: 300; letter-spacing: 5px; }
+  #h16 .tag, #h16 p { animation: fadeUp 1s 1.4s both; }
+
+  /* ===================== HERO 17 – BLOSSOM DRIFT ===================== */
+  #h17 .bg { animation: h17-drift 5s ease-in-out forwards; }
+  @keyframes h17-drift {
+    0%   { transform: translateX(-4%) scale(1.1); filter: brightness(0.9); }
+    100% { transform: translateX(0) scale(1.02); filter: brightness(1.05); }
+  }
+  #h17 .overlay { background: linear-gradient(to top, rgba(60,0,30,0.75) 0%, transparent 55%); }
+  #h17 h1 { animation: fadeUp 1s .5s both; color: #ffcce0; font-style: italic; }
+  #h17 .tag, #h17 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 18 – COFFEE STEAM ===================== */
+  #h18 .bg { animation: h18-warm 5s ease-in-out forwards; }
+  @keyframes h18-warm {
+    0%   { transform: scale(1.1); filter: saturate(0.6) brightness(0.7); }
+    100% { transform: scale(1.02); filter: saturate(1.3) brightness(1.05); }
+  }
+  #h18 .steam {
+    position: absolute;
+    top: 20%; left: 40%;
+    width: 60px; height: 120px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.25) 0%, transparent 70%);
+    animation: steamRise 5s ease-in forwards;
+  }
+  @keyframes steamRise {
+    0%   { transform: translateY(0) scaleX(1); opacity: 0; }
+    20%  { opacity: 0.6; }
+    100% { transform: translateY(-80px) scaleX(1.8); opacity: 0; }
+  }
+  #h18 .overlay { background: linear-gradient(to top, rgba(40,15,0,0.9) 0%, transparent 55%); }
+  #h18 h1 { animation: fadeUp 1s .5s both; color: #d4a55a; }
+  #h18 .tag, #h18 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 19 – SPACE ZOOM OUT ===================== */
+  #h19 .bg { animation: h19-space 5s ease-in-out forwards; }
+  @keyframes h19-space {
+    0%   { transform: scale(1.3); filter: brightness(1.4) saturate(1.5); }
+    100% { transform: scale(1); filter: brightness(1) saturate(1); }
+  }
+  #h19 .overlay { background: linear-gradient(to top, rgba(0,0,20,0.9) 0%, transparent 50%); }
+  #h19 h1 { animation: fadeUp 1s .5s both; color: #aad4ff; letter-spacing: 3px; }
+  #h19 .tag, #h19 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 20 – GOLD LUXURY ===================== */
+  #h20 .bg { animation: h20-gold 5s ease-in-out forwards; }
+  @keyframes h20-gold {
+    0%   { transform: scale(1.05); filter: brightness(0.6) saturate(0.5); }
+    100% { transform: scale(1.12); filter: brightness(1.1) saturate(1.4); }
+  }
+  #h20 .gold-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,175,55,0.12) 0%, transparent 50%, rgba(212,175,55,0.08) 100%);
+    animation: goldShift 5s ease-in-out forwards;
+  }
+  @keyframes goldShift {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  #h20 .overlay { background: linear-gradient(to top, rgba(20,10,0,0.88) 0%, transparent 55%); }
+  #h20 h1 { animation: fadeUp 1s .5s both; color: #d4af37; letter-spacing: 2px; }
+  #h20 .tag, #h20 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== SHARED ANIMATIONS ===================== */
+  @keyframes fadeUp {
+    0%   { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideLeft {
+    0%   { opacity: 0; transform: translateX(40px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="progress-wrap"><div id="progress-bar"></div></div>
+
+  <!-- HERO 1 – NATUR EXPLOSION -->
+  <div class="hero active" id="h1">
+    <img class="bg" src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">01 / Nature</span>
+      <h1>Into The Wild</h1>
+      <p>Lass die Natur deine Seele neu erschaffen.</p>
+    </div>
+  </div>
+
+  <!-- HERO 2 – CITY DREAMS -->
+  <div class="hero" id="h2">
+    <img class="bg" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">02 / City</span>
+      <h1>City Never Sleeps</h1>
+      <p>Millionen Lichter, eine Geschichte.</p>
+    </div>
+  </div>
+
+  <!-- HERO 3 – FASHION CURTAIN -->
+  <div class="hero" id="h3">
+    <img class="bg" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="curtain"></div>
+    <div class="overlay">
+      <span class="tag">03 / Fashion</span>
+      <h1>Own The Look</h1>
+      <p>Mode ist Sprache. Sprich laut.</p>
+    </div>
+  </div>
+
+  <!-- HERO 4 – FOOD GLORY -->
+  <div class="hero" id="h4">
+    <img class="bg" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">04 / Food</span>
+      <h1>Pure Pleasure</h1>
+      <p>Jeder Bissen ist ein Moment für sich.</p>
+    </div>
+  </div>
+
+  <!-- HERO 5 – TECH GLITCH -->
+  <div class="hero" id="h5">
+    <img class="bg" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">05 / Tech</span>
+      <h1>Future Is Now</h1>
+      <p>Die nächste Generation beginnt hier.</p>
+    </div>
+  </div>
+
+  <!-- HERO 6 – OCEAN CALM -->
+  <div class="hero" id="h6">
+    <img class="bg" src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">06 / Ocean</span>
+      <h1>Deep Blue Soul</h1>
+      <p>Das Meer hat keine Grenzen — du auch nicht.</p>
+    </div>
+  </div>
+
+  <!-- HERO 7 – FITNESS BEAST -->
+  <div class="hero" id="h7">
+    <img class="bg" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">07 / Fitness</span>
+      <h1>No Pain No Gain</h1>
+      <p>Dein Körper kann es. Überzeuge deinen Kopf.</p>
+    </div>
+  </div>
+
+  <!-- HERO 8 – LUXURY SHIMMER -->
+  <div class="hero" id="h8">
+    <img class="bg" src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="shimmer"></div>
+    <div class="overlay">
+      <span class="tag">08 / Luxury</span>
+      <h1>Pure Gold</h1>
+      <p>Qualität ist keine Entscheidung, sie ist ein Standard.</p>
+    </div>
+  </div>
+
+  <!-- HERO 9 – NIGHT PULSE -->
+  <div class="hero" id="h9">
+    <img class="bg" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">09 / Night</span>
+      <h1>Feel The Beat</h1>
+      <p>Die Nacht gehört den Mutigen.</p>
+    </div>
+  </div>
+
+  <!-- HERO 10 – MOUNTAIN REVEAL -->
+  <div class="hero" id="h10">
+    <img class="bg" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="reveal"></div>
+    <div class="overlay">
+      <span class="tag">10 / Adventure</span>
+      <h1>Reach New Heights</h1>
+      <p>Jeder Gipfel beginnt mit dem ersten Schritt.</p>
+    </div>
+  </div>
+
+  <!-- HERO 11 – MINIMAL -->
+  <div class="hero" id="h11">
+    <img class="bg" src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">11 / Minimal</span>
+      <h1>Less Is More</h1>
+      <p>Stille ist die lauteste Aussage.</p>
+    </div>
+  </div>
+
+  <!-- HERO 12 – STREET GRUNGE -->
+  <div class="hero" id="h12">
+    <img class="bg" src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">12 / Street</span>
+      <h1>Raw Energy</h1>
+      <p>Die Straße formt Charakter.</p>
+    </div>
+  </div>
+
+  <!-- HERO 13 – BEAUTY BLOOM -->
+  <div class="hero" id="h13">
+    <img class="bg" src="https://images.unsplash.com/photo-1487530811015-780c7cc5cbec?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">13 / Beauty</span>
+      <h1>Bloom &amp; Glow</h1>
+      <p>Schönheit liegt im Mut, man selbst zu sein.</p>
+    </div>
+  </div>
+
+  <!-- HERO 14 – MOTIVATION SUNRISE -->
+  <div class="hero" id="h14">
+    <img class="bg" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">14 / Motivation</span>
+      <h1>Rise &amp; Conquer</h1>
+      <p>Jeder neue Tag ist deine zweite Chance.</p>
+    </div>
+  </div>
+
+  <!-- HERO 15 – BEACH SUNSET -->
+  <div class="hero" id="h15">
+    <img class="bg" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">15 / Chill</span>
+      <h1>Golden Hour</h1>
+      <p>Manche Momente sind es wert, eingefroren zu werden.</p>
+    </div>
+  </div>
+
+  <!-- HERO 16 – DARK FOREST -->
+  <div class="hero" id="h16">
+    <img class="bg" src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1080&h=1920&fit=crop&q=90&blend=222222&blend-mode=multiply&sat=-50" alt="">
+    <div class="overlay">
+      <span class="tag">16 / Dark</span>
+      <h1>Embrace The Dark</h1>
+      <p>Im Dunkel findet man das wahre Licht.</p>
+    </div>
+  </div>
+
+  <!-- HERO 17 – BLOSSOM DRIFT -->
+  <div class="hero" id="h17">
+    <img class="bg" src="https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">17 / Spring</span>
+      <h1>Cherry Dreams</h1>
+      <p>Die Schönheit liegt im flüchtigen Moment.</p>
+    </div>
+  </div>
+
+  <!-- HERO 18 – COFFEE -->
+  <div class="hero" id="h18">
+    <img class="bg" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="steam"></div>
+    <div class="overlay">
+      <span class="tag">18 / Coffee</span>
+      <h1>First Sip First Win</h1>
+      <p>Der Tag beginnt mit dem richtigen Moment.</p>
+    </div>
+  </div>
+
+  <!-- HERO 19 – SPACE -->
+  <div class="hero" id="h19">
+    <img class="bg" src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="overlay">
+      <span class="tag">19 / Space</span>
+      <h1>Infinite Beyond</h1>
+      <p>Das Universum hat nur eine Grenze: deine Vorstellung.</p>
+    </div>
+  </div>
+
+  <!-- HERO 20 – GOLD LUXURY -->
+  <div class="hero" id="h20">
+    <img class="bg" src="https://images.unsplash.com/photo-1512163143273-bde0e3cc7407?w=1080&h=1920&fit=crop&q=90" alt="">
+    <div class="gold-overlay"></div>
+    <div class="overlay">
+      <span class="tag">20 / Gold</span>
+      <h1>All That Glitters</h1>
+      <p>Luxus ist eine Haltung, kein Preis.</p>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button onclick="prev()">← Prev</button>
+  <span id="counter">1 / 20</span>
+  <button onclick="next()">Next →</button>
+</div>
+
+<script>
+  const heroes = document.querySelectorAll('.hero');
+  const bar = document.getElementById('progress-bar');
+  const counter = document.getElementById('counter');
+  let current = 0;
+  let timer = null;
+  let startTime = null;
+  let rafId = null;
+
+  function show(idx) {
+    heroes[current].classList.remove('active');
+    current = (idx + heroes.length) % heroes.length;
+    const el = heroes[current];
+
+    // Reset animations by clone trick
+    const clone = el.cloneNode(true);
+    el.parentNode.replaceChild(clone, el);
+    heroes[current] = clone;
+    heroes[current].classList.add('active');
+
+    counter.textContent = `${current + 1} / 20`;
+
+    // Progress bar
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+    cancelAnimationFrame(rafId);
+    clearTimeout(timer);
+
+    startTime = performance.now();
+    function animBar(now) {
+      const elapsed = now - startTime;
+      const pct = Math.min(elapsed / 5000 * 100, 100);
+      bar.style.width = pct + '%';
+      if (pct < 100) {
+        rafId = requestAnimationFrame(animBar);
+      }
+    }
+    rafId = requestAnimationFrame(animBar);
+
+    timer = setTimeout(() => next(), 5000);
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Init
+  show(0);
+</script>
+</body>
+</html>
