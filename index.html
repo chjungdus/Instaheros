@@ -139,7 +139,7 @@
     0%   { transform: translateY(0) scale(1.1); }
     100% { transform: translateY(-5%) scale(1.05); }
   }
-  #h2 .overlay { background: linear-gradient(to top, rgba(0,0,50,0.9) 0%, transparent 55%); }
+  #h2 .overlay { background: linear-gradient(to top, rgba(0,0,100,0.6) 0%, transparent 55%); }
   #h2 h1 { animation: slideLeft 1s .4s both; }
   #h2 .tag, #h2 p { animation: fadeUp 1s .2s both; }
 
@@ -183,7 +183,7 @@
     30%  { transform: translate(0, 0) scale(1.05); filter: hue-rotate(0deg) brightness(1.2); }
     100% { transform: translate(0,0) scale(1); filter: hue-rotate(0deg) brightness(1); }
   }
-  #h5 .overlay { background: linear-gradient(to top, rgba(0,30,60,0.9) 0%, transparent 55%); }
+  #h5 .overlay { background: linear-gradient(to top, rgba(0,40,80,0.6) 0%, transparent 55%); }
   #h5 h1 { animation: glitchText 5s forwards; color: #00ffcc; }
   @keyframes glitchText {
     0%,100% { text-shadow: none; }
@@ -212,7 +212,7 @@
     17%  { transform: scale(1.18) translate(0,0); }
     100% { transform: scale(1); filter: contrast(1.1) brightness(1); }
   }
-  #h7 .overlay { background: linear-gradient(to top, rgba(60,0,0,0.9) 0%, transparent 50%); }
+  #h7 .overlay { background: linear-gradient(to top, rgba(80,0,0,0.6) 0%, transparent 50%); }
   #h7 h1 { animation: fadeUp 1s .3s both; color: #ff4444; }
   #h7 .tag, #h7 p { animation: fadeUp 1s .5s both; }
 
@@ -242,7 +242,7 @@
     0%,100% { transform: scale(1); filter: brightness(0.7); }
     50%      { transform: scale(1.05); filter: brightness(1.1); }
   }
-  #h9 .overlay { background: linear-gradient(to top, rgba(10,0,30,0.9) 0%, transparent 50%); }
+  #h9 .overlay { background: linear-gradient(to top, rgba(20,0,60,0.6) 0%, transparent 50%); }
   #h9 h1 { animation: fadeUp 1s .4s both; color: #e040fb; }
   #h9 .tag, #h9 p { animation: fadeUp 1s .6s both; }
 
@@ -283,7 +283,7 @@
     0%   { transform: translateY(6%) scale(1.1); filter: contrast(1.3) saturate(0.8); }
     100% { transform: translateY(0) scale(1); filter: contrast(1) saturate(1); }
   }
-  #h12 .overlay { background: linear-gradient(to top, rgba(10,5,0,0.92) 0%, transparent 50%); }
+  #h12 .overlay { background: linear-gradient(to top, rgba(20,10,0,0.65) 0%, transparent 50%); }
   #h12 h1 { animation: slideLeft 1s .3s both; font-style: italic; color: #ff6b00; }
   #h12 .tag, #h12 p { animation: fadeUp 1s .5s both; }
 
@@ -331,7 +331,7 @@
     60%  { filter: brightness(1) blur(0px); }
     100% { transform: scale(1.02); filter: brightness(0.9) blur(0px); }
   }
-  #h16 .overlay { background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%); }
+  #h16 .overlay { background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%); }
   #h16 h1 { animation: fadeUp 1s 1.2s both; color: #ccc; font-weight: 300; letter-spacing: 5px; }
   #h16 .tag, #h16 p { animation: fadeUp 1s 1.4s both; }
 
@@ -363,7 +363,7 @@
     20%  { opacity: 0.6; }
     100% { transform: translateY(-80px) scaleX(1.8); opacity: 0; }
   }
-  #h18 .overlay { background: linear-gradient(to top, rgba(40,15,0,0.9) 0%, transparent 55%); }
+  #h18 .overlay { background: linear-gradient(to top, rgba(50,20,0,0.65) 0%, transparent 55%); }
   #h18 h1 { animation: fadeUp 1s .5s both; color: #d4a55a; }
   #h18 .tag, #h18 p { animation: fadeUp 1s .7s both; }
 
@@ -373,7 +373,7 @@
     0%   { transform: scale(1.3); filter: brightness(1.4) saturate(1.5); }
     100% { transform: scale(1); filter: brightness(1) saturate(1); }
   }
-  #h19 .overlay { background: linear-gradient(to top, rgba(0,0,20,0.9) 0%, transparent 50%); }
+  #h19 .overlay { background: linear-gradient(to top, rgba(0,0,40,0.65) 0%, transparent 50%); }
   #h19 h1 { animation: fadeUp 1s .5s both; color: #aad4ff; letter-spacing: 3px; }
   #h19 .tag, #h19 p { animation: fadeUp 1s .7s both; }
 
@@ -627,7 +627,7 @@
 </div>
 
 <script>
-  const heroes = document.querySelectorAll('.hero');
+  const heroes = [...document.querySelectorAll('.hero')];
   const bar = document.getElementById('progress-bar');
   const counter = document.getElementById('counter');
   let current = 0;
