@@ -5,978 +5,1167 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Instaheros</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  background: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  font-family: 'Arial', sans-serif;
+  background:#111;
+  display:flex; flex-direction:column;
+  align-items:center;
+  min-height:100vh;
+  font-family:'Arial',sans-serif;
 }
 
+/* ── HAMBURGER BANNER ── */
+#banner {
+  width:405px;
+  background:#0a0a0a;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 18px;
+  height:48px;
+  position:relative;
+  z-index:200;
+}
+#banner .logo {
+  font-size:15px; font-weight:900; letter-spacing:2px;
+  color:#fff; text-transform:uppercase;
+}
+#banner .logo span { color:#7b61ff; }
+.hamburger {
+  display:flex; flex-direction:column; justify-content:center;
+  gap:5px; cursor:pointer; padding:6px;
+}
+.hamburger span {
+  display:block; width:22px; height:2px;
+  background:#fff; border-radius:2px;
+  transition:all .3s;
+}
+#nav-menu {
+  position:absolute; top:48px; right:0;
+  width:180px; background:#0d0d0d;
+  border:1px solid rgba(255,255,255,.08);
+  border-top:none; border-radius:0 0 0 10px;
+  overflow:hidden;
+  max-height:0; transition:max-height .35s ease;
+}
+#nav-menu.open { max-height:300px; }
+#nav-menu a {
+  display:block; padding:13px 20px;
+  font-size:12px; letter-spacing:2px;
+  text-transform:uppercase; color:rgba(255,255,255,.7);
+  text-decoration:none; border-bottom:1px solid rgba(255,255,255,.05);
+  transition:color .2s, background .2s;
+}
+#nav-menu a:hover { color:#fff; background:rgba(255,255,255,.05); }
+
+/* ── STAGE ── */
 #stage {
-  position: relative;
-  width: 405px;
-  height: 720px;
-  overflow: hidden;
-  border-radius: 14px;
-  box-shadow: 0 0 80px rgba(255,255,255,0.06);
+  position:relative;
+  width:405px; height:672px;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,0,0,.8);
 }
 
 .hero {
-  position: absolute;
-  inset: 0;
-  display: none;
-  overflow: hidden;
+  position:absolute; inset:0;
+  display:none; overflow:hidden;
 }
-.hero.active { display: block; }
+.hero.active { display:block; }
 
-/* PROGRESS BAR */
+/* PROGRESS */
 #progress-wrap {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  z-index: 100;
-  background: rgba(255,255,255,0.1);
+  position:absolute; top:0; left:0; right:0;
+  height:3px; z-index:100;
+  background:rgba(255,255,255,.1);
 }
-#progress-bar {
-  height: 100%;
-  background: #fff;
-  width: 0%;
-}
+#progress-bar { height:100%; background:#fff; width:0%; }
 
 /* NAV DOTS */
 #nav-dots {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-  z-index: 100;
+  position:absolute; bottom:16px; left:50%;
+  transform:translateX(-50%);
+  display:flex; gap:6px; z-index:100;
 }
 .dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  cursor: pointer;
-  transition: all .3s;
+  width:5px; height:5px; border-radius:50%;
+  background:rgba(255,255,255,.35); cursor:pointer; transition:all .3s;
 }
-.dot.active {
-  background: #fff;
-  width: 18px;
-  border-radius: 3px;
+.dot.active { background:#fff; width:18px; border-radius:3px; }
+
+/* SHARED ANIMATIONS */
+@keyframes fadeIn   { from{opacity:0}       to{opacity:1} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideL   { from{opacity:0;transform:translateX(-28px)} to{opacity:1;transform:translateX(0)} }
+@keyframes slideR   { from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:translateX(0)} }
+@keyframes slideD   { from{opacity:0;transform:translateY(-22px)} to{opacity:1;transform:translateY(0)} }
+@keyframes scaleIn  { from{opacity:0;transform:scale(.6)} to{opacity:1;transform:scale(1)} }
+@keyframes spin3d   { 0%{transform:rotateY(0deg)} 100%{transform:rotateY(360deg)} }
+@keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+@keyframes floatR   { 0%,100%{transform:translateY(0) rotate(-8deg)} 50%{transform:translateY(-14px) rotate(8deg)} }
+@keyframes pulse    { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+@keyframes glow     { 0%,100%{opacity:.5} 50%{opacity:1} }
+@keyframes rotateZ  { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+@keyframes bounce   { 0%,100%{transform:translateY(0) scale(1)} 40%{transform:translateY(-22px) scale(1.05)} 70%{transform:translateY(-10px) scale(.98)} }
+
+/* ═══════════════════════════════════
+   H1 — PARFUM  |  Zentriert
+═══════════════════════════════════ */
+#h1 { background:radial-gradient(ellipse at 50% 80%, #1a0033 0%, #05001a 60%, #000 100%); }
+
+#h1 .glow-orb {
+  position:absolute; width:280px; height:280px; border-radius:50%;
+  background:radial-gradient(circle, rgba(150,0,255,.35) 0%, transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  animation:glow 3s ease-in-out infinite;
 }
 
-/* SHARED */
-@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
-@keyframes fadeUp { from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:translateY(0) } }
-@keyframes slideDown { from { opacity:0; transform:translateY(-28px) } to { opacity:1; transform:translateY(0) } }
-@keyframes slideRight { from { opacity:0; transform:translateX(30px) } to { opacity:1; transform:translateX(0) } }
-@keyframes slideLeft { from { opacity:0; transform:translateX(-30px) } to { opacity:1; transform:translateX(0) } }
-@keyframes scaleIn { from { opacity:0; transform:scale(.7) } to { opacity:1; transform:scale(1) } }
-@keyframes widen { from { width:0 } to { width:40px } }
-
-/* ══════════════════════════════════════════
-   HERO 1 — AURORA  |  LAYOUT: Zentriert
-══════════════════════════════════════════ */
-#h1 { background: #04001a; }
-
-#h1 .aurora {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 90% 55% at 15% 35%, rgba(0,255,150,.45) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 85% 55%, rgba(120,0,255,.5) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 45% at 50% 10%, rgba(0,140,255,.3) 0%, transparent 60%);
-  animation: auroraPulse 6s ease-in-out infinite alternate;
+/* Parfum-Flasche aus CSS */
+#h1 .bottle {
+  position:absolute; left:50%; top:22%; transform:translateX(-50%);
+  animation:float 3.5s ease-in-out infinite;
+  perspective:400px;
+  width:70px;
 }
-@keyframes auroraPulse {
-  0%   { filter:hue-rotate(0deg) brightness(.85); transform:skewY(-3deg) scale(1); }
-  50%  { filter:hue-rotate(35deg) brightness(1.2); transform:skewY(2deg) scale(1.06); }
-  100% { filter:hue-rotate(-15deg) brightness(1); transform:skewY(0deg) scale(1.02); }
+#h1 .bottle-body {
+  width:70px; height:120px; border-radius:8px 8px 14px 14px;
+  background:linear-gradient(135deg, rgba(200,150,255,.9) 0%, rgba(100,0,200,.8) 40%, rgba(50,0,100,.9) 100%);
+  box-shadow:0 0 40px rgba(150,0,255,.6), inset 2px 0 8px rgba(255,255,255,.25), inset -2px 0 4px rgba(0,0,0,.3);
+  position:relative;
 }
-#h1 .stars {
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 8% 12%, #fff 0%, transparent 100%),
-    radial-gradient(1px 1px at 22% 7%, rgba(255,255,255,.7) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 45% 5%, #fff 0%, transparent 100%),
-    radial-gradient(1px 1px at 68% 15%, rgba(255,255,255,.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 9%, #fff 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 35% 28%, rgba(255,255,255,.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 72% 32%, rgba(200,220,255,.8) 0%, transparent 100%),
-    radial-gradient(2px 2px at 55% 20%, rgba(200,200,255,.9) 0%, transparent 100%);
-  animation: twinkle 3s ease-in-out infinite alternate;
+#h1 .bottle-body::before {
+  content:''; position:absolute; top:15px; left:8px; right:8px; bottom:15px;
+  border:1px solid rgba(255,255,255,.2); border-radius:5px;
 }
-@keyframes twinkle { 0% { opacity:.5 } 100% { opacity:1 } }
+#h1 .bottle-neck {
+  width:28px; height:28px; margin:0 auto;
+  background:linear-gradient(135deg, rgba(220,180,255,.9), rgba(120,0,220,.8));
+  border-radius:4px 4px 0 0;
+  box-shadow:inset 2px 0 4px rgba(255,255,255,.2);
+}
+#h1 .bottle-cap {
+  width:38px; height:14px; margin:0 auto;
+  background:linear-gradient(135deg, #d4af37, #8b6914, #d4af37);
+  border-radius:3px 3px 0 0;
+  box-shadow:0 0 12px rgba(212,175,55,.5);
+}
+#h1 .bottle-label {
+  position:absolute; left:8px; right:8px; top:35px; bottom:35px;
+  background:rgba(255,255,255,.08); border-radius:3px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:8px; letter-spacing:2px; color:rgba(255,255,255,.6);
+  text-transform:uppercase;
+}
 
-/* LAYOUT: Alles zentriert, Badge oben */
 #h1 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 40px;
-}
-#h1 .badge {
-  width: 72px; height: 72px; border-radius: 50%;
-  border: 2px solid rgba(0,255,150,.6);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px; margin-bottom: 22px;
-  background: rgba(0,255,150,.1);
-  animation: badgePulse 2.5s ease-in-out infinite;
-}
-@keyframes badgePulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(0,255,150,.5) }
-  50%      { box-shadow: 0 0 0 18px rgba(0,255,150,0) }
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end;
+  text-align:center; padding:30px 32px 52px;
 }
 #h1 .eyebrow {
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(0,255,150,.9); margin-bottom: 14px;
-  animation: fadeIn 1s .5s both;
+  font-size:9px; letter-spacing:5px; text-transform:uppercase;
+  color:rgba(200,150,255,.9); margin-bottom:12px;
+  animation:fadeIn 1s .5s both;
 }
 #h1 h1 {
-  font-size: 50px; font-weight: 900; color: #fff;
-  line-height: .95; letter-spacing: -1px;
-  animation: scaleIn 1s .3s both;
-  text-shadow: 0 0 60px rgba(0,255,150,.5);
+  font-size:46px; font-weight:900; color:#fff; line-height:.95;
+  text-shadow:0 0 60px rgba(150,0,255,.6);
+  animation:fadeUp 1s .3s both;
 }
 #h1 .sub {
-  margin-top: 18px; font-size: 13px; color: rgba(255,255,255,.65);
-  line-height: 1.65; max-width: 260px;
-  animation: fadeIn 1s .7s both;
+  margin-top:14px; font-size:12px; color:rgba(200,180,255,.7);
+  line-height:1.65; max-width:250px; animation:fadeIn 1s .7s both;
 }
 #h1 .cta {
-  margin-top: 28px; padding: 13px 34px;
-  background: linear-gradient(135deg, #00ff96, #00c8ff);
-  color: #000; font-size: 11px; font-weight: 800;
-  letter-spacing: 2px; text-transform: uppercase;
-  border-radius: 50px; animation: fadeIn 1s 1s both;
+  margin-top:22px; padding:13px 34px;
+  background:linear-gradient(135deg,#9400ff,#6600cc);
+  color:#fff; font-size:11px; font-weight:800;
+  letter-spacing:2px; text-transform:uppercase; border-radius:50px;
+  animation:fadeIn 1s .9s both;
+  box-shadow:0 0 30px rgba(150,0,255,.5);
 }
 
-/* ══════════════════════════════════════════
-   HERO 2 — FIRE  |  LAYOUT: Titel oben, Details unten
-══════════════════════════════════════════ */
-#h2 { background: #0d0100; }
-
-#h2 .fire {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 110% 65% at 50% 115%, rgba(255,80,0,.95) 0%, rgba(200,20,0,.7) 25%, rgba(80,0,0,.4) 55%, transparent 80%);
-  animation: firePulse 3s ease-in-out infinite alternate;
-}
-@keyframes firePulse {
-  0%   { transform:scaleY(1) translateY(0); opacity:.8 }
-  50%  { transform:scaleY(1.06) translateY(-12px); opacity:1 }
-  100% { transform:scaleY(.95) translateY(6px); opacity:.9 }
-}
-#h2 .fire2 {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 70% 40% at 25% 105%, rgba(255,160,0,.7) 0%, transparent 55%),
-    radial-gradient(ellipse 65% 40% at 75% 105%, rgba(255,50,0,.6) 0%, transparent 55%);
-  animation: fire2 2.2s ease-in-out infinite alternate;
-  mix-blend-mode: screen;
-}
-@keyframes fire2 {
-  0%   { transform:translateY(0) scaleX(1) }
-  100% { transform:translateY(-22px) scaleX(1.12) }
-}
-#h2 .sparks {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(2px 2px at 30% 70%, rgba(255,200,0,.9) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 80%, rgba(255,180,0,.7) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 45% 60%, rgba(255,220,50,.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 65%, rgba(255,200,0,.6) 0%, transparent 100%),
-    radial-gradient(2px 2px at 20% 75%, rgba(255,150,0,.8) 0%, transparent 100%);
-  animation: sparksFloat 2s ease-in-out infinite alternate;
-}
-@keyframes sparksFloat {
-  0%   { transform:translateY(0); opacity:.6 }
-  100% { transform:translateY(-30px); opacity:1 }
+/* ═══════════════════════════════════
+   H2 — SNEAKER  |  Titel oben / Produkt unten
+═══════════════════════════════════ */
+#h2 { background:radial-gradient(ellipse at 50% 100%, #1a0a00 0%, #0d0500 50%, #000 100%); }
+#h2 .floor-glow {
+  position:absolute; bottom:0; left:0; right:0; height:200px;
+  background:radial-gradient(ellipse 80% 40% at 50% 100%, rgba(255,120,0,.3) 0%, transparent 70%);
+  animation:glow 3s ease-in-out infinite;
 }
 
-/* LAYOUT: Großer Titel oben links, Details unten rechts */
+/* Sneaker aus CSS */
+#h2 .shoe {
+  position:absolute; left:50%; bottom:130px; transform:translateX(-50%);
+  animation:float 3s ease-in-out infinite;
+  width:180px; height:80px;
+}
+#h2 .sole {
+  position:absolute; bottom:0; left:0; right:0; height:22px;
+  background:linear-gradient(to right, #222, #333, #222);
+  border-radius:4px 8px 8px 4px;
+  box-shadow:0 4px 20px rgba(0,0,0,.6);
+}
+#h2 .midsole {
+  position:absolute; bottom:18px; left:5px; right:0; height:18px;
+  background:linear-gradient(to right, #ff6600, #ff4400, #ff6600);
+  border-radius:3px 6px 6px 3px;
+  box-shadow:0 0 20px rgba(255,80,0,.5);
+}
+#h2 .upper {
+  position:absolute; bottom:32px; left:0; right:15px; height:50px;
+  background:linear-gradient(135deg, #fff 0%, #e8e8e8 40%, #ccc 100%);
+  border-radius:12px 30px 8px 4px;
+  box-shadow:inset -3px -2px 6px rgba(0,0,0,.15), 0 0 20px rgba(255,255,255,.1);
+}
+#h2 .upper::before {
+  content:''; position:absolute; top:12px; left:20px; right:30px; height:3px;
+  background:linear-gradient(to right, rgba(255,80,0,.8), rgba(255,80,0,.3));
+  border-radius:2px;
+}
+#h2 .upper::after {
+  content:''; position:absolute; top:22px; left:20px; right:40px; height:3px;
+  background:linear-gradient(to right, rgba(255,80,0,.6), rgba(255,80,0,.2));
+  border-radius:2px;
+}
+#h2 .toe { position:absolute; bottom:36px; right:0; width:50px; height:44px; background:linear-gradient(135deg,#eee,#ccc); border-radius:4px 20px 8px 4px; }
+#h2 .lace { position:absolute; bottom:60px; left:40px; right:25px; height:12px; background:linear-gradient(to right, rgba(180,180,180,.8), rgba(150,150,150,.4)); border-radius:3px; }
+
+#h2 .shadow {
+  position:absolute; bottom:120px; left:50%; transform:translateX(-50%);
+  width:140px; height:12px;
+  background:radial-gradient(ellipse,rgba(255,80,0,.3) 0%,transparent 70%);
+  animation:pulse 3s ease-in-out infinite;
+}
+
 #h2 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  padding: 54px 30px 44px;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  padding:52px 28px 44px;
 }
 #h2 .eyebrow {
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(255,150,0,.9); margin-bottom: 14px;
-  animation: slideDown .8s .2s both;
+  font-size:9px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(255,150,0,.9); margin-bottom:12px; animation:slideD .8s .2s both;
 }
 #h2 h1 {
-  font-size: 60px; font-weight: 900; color: #fff;
-  line-height: .9; text-transform: uppercase;
-  animation: slideDown .7s .1s both;
-  text-shadow: 0 0 80px rgba(255,80,0,.9);
+  font-size:56px; font-weight:900; color:#fff; line-height:.88;
+  text-transform:uppercase;
+  text-shadow:0 0 60px rgba(255,80,0,.7);
+  animation:slideD .7s .1s both;
 }
-#h2 .spacer { flex: 1; }
+#h2 .spacer { flex:1; }
 #h2 .bottom {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 16px; animation: fadeIn 1s 1s both;
+  display:flex; align-items:flex-end; justify-content:space-between;
+  animation:fadeIn 1s 1s both;
 }
 #h2 .sub {
-  font-size: 12px; color: rgba(255,200,100,.85);
-  line-height: 1.65; max-width: 190px;
+  font-size:12px; color:rgba(255,200,100,.8);
+  line-height:1.6; max-width:185px;
 }
 #h2 .cta {
-  padding: 12px 20px; flex-shrink: 0;
-  background: rgba(255,80,0,.2);
-  border: 1px solid rgba(255,80,0,.7);
-  color: #ff8040; font-size: 11px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  border-radius: 4px;
+  flex-shrink:0; padding:12px 20px;
+  background:rgba(255,80,0,.2); border:1px solid rgba(255,80,0,.7);
+  color:#ff8040; font-size:11px; font-weight:700;
+  letter-spacing:1.5px; text-transform:uppercase; border-radius:4px;
 }
 
-/* ══════════════════════════════════════════
-   HERO 3 — OCEAN  |  LAYOUT: Rechts ausgerichtet
-══════════════════════════════════════════ */
-#h3 { background: #000d1c; }
+/* ═══════════════════════════════════
+   H3 — SMARTPHONE  |  Split links/rechts
+═══════════════════════════════════ */
+#h3 { background:radial-gradient(ellipse at 100% 50%, #001a33 0%, #000d1a 50%, #000 100%); }
+#h3 .scan-line {
+  position:absolute; left:0; right:0; height:2px;
+  background:linear-gradient(to right,transparent,rgba(0,200,255,.8),transparent);
+  animation:scanV 3s linear infinite;
+}
+@keyframes scanV { 0%{top:0;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:100%;opacity:0} }
 
-#h3 .ocean-bg {
-  position: absolute; inset: 0;
+/* Handy aus CSS */
+#h3 .phone {
+  position:absolute; right:28px; top:50%; transform:translateY(-50%);
+  animation:float 4s ease-in-out infinite;
+  perspective:600px;
+}
+#h3 .phone-body {
+  width:80px; height:155px; border-radius:14px;
+  background:linear-gradient(145deg, #1a1a2e 0%, #0d0d1a 50%, #1a1a2e 100%);
+  border:2px solid rgba(0,200,255,.3);
+  box-shadow:0 0 40px rgba(0,200,255,.3), inset 0 0 20px rgba(0,200,255,.05);
+  position:relative; overflow:hidden;
+}
+#h3 .screen {
+  position:absolute; top:8px; left:6px; right:6px; bottom:8px;
+  border-radius:10px; overflow:hidden;
+  background:linear-gradient(180deg, #0a0a1a 0%, #001133 50%, #000d22 100%);
+}
+#h3 .screen-content {
+  position:absolute; inset:0;
   background:
-    radial-gradient(ellipse 130% 65% at -15% 75%, rgba(0,80,170,.85) 0%, transparent 60%),
-    radial-gradient(ellipse 90% 50% at 120% 25%, rgba(0,160,210,.6) 0%, transparent 60%),
-    linear-gradient(180deg, #000d1c 0%, #001f40 40%, #003368 70%, #001830 100%);
-  animation: oceanShift 5s ease-in-out infinite alternate;
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(0,150,255,.4) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 70%, rgba(0,80,200,.3) 0%, transparent 60%);
+  animation:glow 2s ease-in-out infinite;
 }
-@keyframes oceanShift {
-  0%   { filter:brightness(.85) hue-rotate(-8deg) }
-  100% { filter:brightness(1.1) hue-rotate(8deg) }
+#h3 .notch {
+  position:absolute; top:6px; left:50%; transform:translateX(-50%);
+  width:22px; height:5px; background:#000; border-radius:0 0 4px 4px;
+  z-index:5;
 }
-#h3 .wave {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 220px;
-  background: linear-gradient(to top, rgba(0,100,200,.35) 0%, transparent 100%);
-  border-radius: 60% 60% 0 0 / 30px 30px 0 0;
-  animation: waveFloat 3.5s ease-in-out infinite;
+#h3 .app-grid {
+  position:absolute; top:20px; left:6px; right:6px;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:4px;
 }
-#h3 .wave2 {
-  position: absolute; bottom: 0; left: -30px; right: -30px;
-  height: 160px;
-  background: linear-gradient(to top, rgba(0,160,255,.2) 0%, transparent 100%);
-  border-radius: 50% 50% 0 0 / 40px 40px 0 0;
-  animation: waveFloat 2.8s ease-in-out infinite reverse;
+#h3 .app {
+  width:16px; height:16px; border-radius:4px;
+  animation:glow 2s ease-in-out infinite;
 }
-@keyframes waveFloat {
-  0%,100% { transform:translateX(0) scaleX(1) }
-  50%      { transform:translateX(18px) scaleX(1.06) }
+#h3 .app:nth-child(1){ background:rgba(255,80,0,.7) }
+#h3 .app:nth-child(2){ background:rgba(0,200,100,.7); animation-delay:.3s }
+#h3 .app:nth-child(3){ background:rgba(0,150,255,.7); animation-delay:.6s }
+#h3 .app:nth-child(4){ background:rgba(200,0,255,.7); animation-delay:.2s }
+#h3 .app:nth-child(5){ background:rgba(255,200,0,.7); animation-delay:.5s }
+#h3 .app:nth-child(6){ background:rgba(255,50,100,.7); animation-delay:.8s }
+#h3 .home-bar {
+  position:absolute; bottom:4px; left:50%; transform:translateX(-50%);
+  width:30px; height:3px; background:rgba(255,255,255,.3); border-radius:2px;
 }
-
-/* LAYOUT: Rechtsbündig mit vertikaler Linie */
-#h3 .vline {
-  position: absolute; right: 52px; top: 50%;
-  transform: translateY(-50%);
-  width: 2px; height: 0;
-  background: linear-gradient(to bottom, transparent, rgba(0,210,255,.9), transparent);
-  animation: lineGrow 1s .2s forwards;
+#h3 .phone-shadow {
+  width:60px; height:10px; margin:0 auto;
+  background:radial-gradient(ellipse,rgba(0,200,255,.25) 0%,transparent 70%);
+  animation:pulse 4s ease-in-out infinite;
 }
-@keyframes lineGrow { to { height: 210px } }
 
 #h3 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: flex-end; justify-content: center;
-  text-align: right; padding: 40px 28px 40px 40px;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  justify-content:center; padding:40px 110px 40px 28px;
 }
 #h3 .eyebrow {
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(0,210,255,.9); margin-bottom: 12px;
-  animation: slideRight .8s .3s both; padding-right: 28px;
+  font-size:9px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(0,200,255,.9); margin-bottom:12px; animation:slideL .8s .3s both;
 }
 #h3 h1 {
-  font-size: 44px; font-weight: 900; color: #fff;
-  line-height: 1.0; text-transform: uppercase;
-  animation: slideRight .7s .1s both; padding-right: 28px;
-  text-shadow: 0 0 50px rgba(0,150,255,.6);
+  font-size:42px; font-weight:900; color:#fff; line-height:1.0;
+  text-transform:uppercase;
+  text-shadow:0 0 40px rgba(0,150,255,.6);
+  animation:slideL .7s .1s both;
 }
 #h3 .sub {
-  margin-top: 16px; font-size: 12px; color: rgba(140,220,255,.8);
-  line-height: 1.65; max-width: 215px;
-  animation: slideRight .8s .5s both; padding-right: 28px;
+  margin-top:14px; font-size:12px; color:rgba(140,220,255,.8);
+  line-height:1.65; animation:slideL .8s .5s both;
 }
 #h3 .cta {
-  margin-top: 22px; margin-right: 28px; padding: 11px 26px;
-  background: transparent; border: 1px solid rgba(0,210,255,.7);
-  color: #00d2ff; font-size: 11px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  animation: slideRight .8s .7s both;
+  margin-top:22px; padding:11px 24px; width:fit-content;
+  background:rgba(0,200,255,.12); border:1px solid rgba(0,200,255,.5);
+  color:#00c8ff; font-size:11px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase;
+  animation:slideL .8s .7s both;
 }
 
-/* ══════════════════════════════════════════
-   HERO 4 — NEON GRID  |  LAYOUT: Split Links/Rechts
-══════════════════════════════════════════ */
-#h4 { background: #05051a; }
+/* ═══════════════════════════════════
+   H4 — KAFFEE  |  Minimal zentriert
+═══════════════════════════════════ */
+#h4 { background:radial-gradient(ellipse at 50% 60%, #1a0e00 0%, #0d0700 50%, #000 100%); }
+#h4 .warm-glow {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 60% at 50% 60%, rgba(180,80,0,.2) 0%, transparent 70%);
+  animation:glow 4s ease-in-out infinite;
+}
 
-#h4 .grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(0,210,255,.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,210,255,.1) 1px, transparent 1px),
-    linear-gradient(rgba(0,210,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,210,255,.03) 1px, transparent 1px);
-  background-size: 60px 60px, 60px 60px, 15px 15px, 15px 15px;
-  animation: gridScroll 7s linear infinite;
-  transform: perspective(280px) rotateX(28deg) scale(1.6);
-  transform-origin: bottom;
+/* Kaffeetasse aus CSS */
+#h4 .cup-wrap {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-60%);
+  animation:float 4s ease-in-out infinite;
 }
-@keyframes gridScroll {
-  0%   { background-position:0 0 }
-  100% { background-position:0 60px }
+#h4 .saucer {
+  width:110px; height:14px; border-radius:50%;
+  background:linear-gradient(180deg,#5a3a1a,#3a2010);
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
+  margin:0 auto;
 }
-#h4 .scan {
-  position: absolute; left: 0; right: 0; height: 2px;
-  background: linear-gradient(to right, transparent, rgba(0,210,255,.9), rgba(255,0,200,.9), transparent);
-  box-shadow: 0 0 12px rgba(0,210,255,.6);
-  animation: scanMove 3.5s ease-in-out infinite;
+#h4 .cup {
+  width:85px; height:75px; margin:0 auto;
+  background:linear-gradient(145deg, #6b4226 0%, #4a2c12 50%, #3a1f08 100%);
+  border-radius:5px 5px 12px 12px;
+  position:relative; transform:translateY(2px);
+  box-shadow:0 0 30px rgba(150,70,0,.3), inset 2px 0 6px rgba(255,150,50,.15);
 }
-@keyframes scanMove {
-  0%   { top:0; opacity:0 }
-  10%  { opacity:1 }
-  90%  { opacity:1 }
-  100% { top:100%; opacity:0 }
+#h4 .cup::before {
+  content:''; position:absolute; top:-14px; left:8px; right:8px;
+  height:18px; background:#1a0e00; border-radius:50%;
+  border:2px solid rgba(180,100,30,.4);
 }
-#h4 .glow-right {
-  position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
-  background:
-    radial-gradient(ellipse 80% 60% at 90% 40%, rgba(255,0,200,.2) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 60% at 20% 70%, rgba(0,210,255,.15) 0%, transparent 70%);
-  animation: glowPulse 3s ease-in-out infinite alternate;
+#h4 .coffee-top {
+  position:absolute; top:-12px; left:10px; right:10px; height:14px;
+  border-radius:50%;
+  background:radial-gradient(ellipse, #2a1505 30%, #1a0e00 70%);
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.8);
 }
-@keyframes glowPulse { 0% { opacity:.5 } 100% { opacity:1 } }
+#h4 .handle {
+  position:absolute; right:-22px; top:20px;
+  width:22px; height:35px;
+  border:4px solid #4a2c12; border-left:none;
+  border-radius:0 12px 12px 0;
+}
+#h4 .steam-w {
+  position:absolute; left:50%; transform:translateX(-50%);
+  bottom:calc(100% + 2px); width:70px; height:50px;
+}
+#h4 .steam-w i {
+  position:absolute; bottom:0; width:3px;
+  border-radius:2px;
+  background:rgba(255,255,255,.3);
+  animation:steamUp 2.5s ease-in infinite;
+}
+#h4 .steam-w i:nth-child(1){ left:15px; height:30px; animation-delay:0s }
+#h4 .steam-w i:nth-child(2){ left:30px; height:40px; animation-delay:.6s }
+#h4 .steam-w i:nth-child(3){ left:45px; height:25px; animation-delay:1.2s }
+@keyframes steamUp {
+  0%   { transform:scaleX(1) translateY(0); opacity:.6 }
+  50%  { transform:scaleX(1.5) translateY(-15px); opacity:.4 }
+  100% { transform:scaleX(2) translateY(-40px); opacity:0 }
+}
 
-/* LAYOUT: Text links in einem dunklen Panel */
-#h4 .panel {
-  position: absolute; top: 0; left: 0; bottom: 0; width: 58%;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 40px 20px 40px 28px;
-  background: linear-gradient(to right, rgba(5,5,26,.97) 65%, transparent);
-  z-index: 10;
+#h4 .content {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end;
+  text-align:center; padding:30px 32px 52px;
 }
 #h4 .eyebrow {
-  font-size: 8px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(0,210,255,.9); margin-bottom: 14px;
-  animation: fadeIn .8s .3s both;
+  font-size:9px; letter-spacing:5px; text-transform:uppercase;
+  color:rgba(200,130,50,.9); margin-bottom:12px; animation:fadeIn 1s .5s both;
 }
 #h4 h1 {
-  font-size: 46px; font-weight: 900; color: #fff;
-  line-height: 1.0; text-transform: uppercase;
-  animation: slideLeft .8s .1s both;
-  text-shadow: 0 0 40px rgba(0,210,255,.7), 0 0 80px rgba(0,210,255,.3);
+  font-size:44px; font-weight:200; color:#fff; line-height:1.05;
+  letter-spacing:5px; text-transform:uppercase;
+  animation:fadeUp 1s .3s both;
 }
+#h4 .divider {
+  width:0; height:1px; background:rgba(200,130,50,.5); margin:16px auto;
+  animation:widen 1s .7s both;
+}
+@keyframes widen { from{width:0} to{width:40px} }
 #h4 .sub {
-  margin-top: 14px; font-size: 11px; color: rgba(140,220,255,.75);
-  line-height: 1.7; animation: fadeIn .8s .5s both;
+  font-size:12px; color:rgba(200,160,100,.75);
+  line-height:1.7; max-width:230px; animation:fadeIn 1s .8s both;
 }
 #h4 .cta {
-  margin-top: 22px; padding: 10px 20px; width: fit-content;
-  background: rgba(0,210,255,.12);
-  border: 1px solid rgba(0,210,255,.5);
-  color: #00d2ff; font-size: 10px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  border-radius: 2px; animation: fadeIn .8s .7s both;
-  box-shadow: 0 0 20px rgba(0,210,255,.2);
+  margin-top:22px; padding:12px 28px;
+  background:rgba(180,80,0,.2); border:1px solid rgba(200,120,30,.5);
+  color:#d4844a; font-size:10px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  animation:fadeIn 1s 1s both;
 }
 
-/* ══════════════════════════════════════════
-   HERO 5 — GOLDEN HOUR  |  LAYOUT: Große Ghost-Zahl
-══════════════════════════════════════════ */
-#h5 { background: #0d0900; }
+/* ═══════════════════════════════════
+   H5 — UHRWERK  |  Ghost-Zahl + rechts
+═══════════════════════════════════ */
+#h5 { background:radial-gradient(ellipse at 30% 50%, #1a1500 0%, #0d0900 50%, #000 100%); }
 
-#h5 .golden {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 110% 55% at 50% 105%, rgba(255,165,0,.75) 0%, rgba(200,80,0,.45) 35%, transparent 70%),
-    radial-gradient(ellipse 80% 60% at 85% 50%, rgba(255,200,0,.2) 0%, transparent 60%);
-  animation: goldenPulse 4s ease-in-out infinite alternate;
+/* Uhr aus CSS */
+#h5 .watch-wrap {
+  position:absolute; right:28px; top:50%; transform:translateY(-50%);
+  animation:float 5s ease-in-out infinite;
 }
-@keyframes goldenPulse {
-  0%   { opacity:.8; filter:hue-rotate(-5deg) }
-  100% { opacity:1; filter:hue-rotate(6deg) }
+#h5 .watch-case {
+  width:100px; height:120px; border-radius:18px;
+  background:linear-gradient(145deg, #2a2a2a, #1a1a1a, #2a2a2a);
+  border:3px solid #d4af37;
+  box-shadow:0 0 40px rgba(212,175,55,.3), inset 0 0 20px rgba(212,175,55,.05);
+  position:relative; display:flex; align-items:center; justify-content:center;
 }
-#h5 .rays {
-  position: absolute; bottom: 0; left: 50%; width: 100%; height: 100%;
-  transform: translateX(-50%);
-  background: conic-gradient(from 0deg at 50% 110%,
-    transparent 0deg, rgba(255,165,0,.06) 8deg, transparent 16deg,
-    rgba(255,200,0,.05) 24deg, transparent 32deg,
-    rgba(255,165,0,.07) 40deg, transparent 48deg,
-    rgba(255,200,0,.05) 56deg, transparent 64deg,
-    rgba(255,165,0,.06) 72deg, transparent 80deg,
-    rgba(255,200,0,.07) 88deg, transparent 96deg,
-    rgba(255,165,0,.05) 104deg, transparent 112deg,
-    rgba(255,200,0,.06) 120deg, transparent 128deg,
-    rgba(255,165,0,.07) 136deg, transparent 144deg,
-    rgba(255,200,0,.05) 152deg, transparent 160deg,
-    rgba(255,165,0,.06) 168deg, transparent 180deg);
-  animation: raysRotate 12s linear infinite;
+#h5 .watch-face {
+  width:80px; height:100px; border-radius:14px;
+  background:radial-gradient(circle, #111 0%, #050505 100%);
+  border:1px solid rgba(212,175,55,.3);
+  position:relative; overflow:hidden;
 }
-@keyframes raysRotate {
-  0%   { transform:translateX(-50%) rotate(0deg) }
-  100% { transform:translateX(-50%) rotate(360deg) }
+#h5 .dial-mark {
+  position:absolute; left:50%; top:4px;
+  width:2px; height:8px; background:rgba(212,175,55,.7);
+  transform-origin:50% 46px; transform:translateX(-50%);
+  border-radius:1px;
+}
+#h5 .dm2  { transform:translateX(-50%) rotate(30deg) }
+#h5 .dm3  { transform:translateX(-50%) rotate(60deg) }
+#h5 .dm4  { transform:translateX(-50%) rotate(90deg) }
+#h5 .dm5  { transform:translateX(-50%) rotate(120deg) }
+#h5 .dm6  { transform:translateX(-50%) rotate(150deg) }
+#h5 .dm7  { transform:translateX(-50%) rotate(180deg) }
+#h5 .dm8  { transform:translateX(-50%) rotate(210deg) }
+#h5 .dm9  { transform:translateX(-50%) rotate(240deg) }
+#h5 .dm10 { transform:translateX(-50%) rotate(270deg) }
+#h5 .dm11 { transform:translateX(-50%) rotate(300deg) }
+#h5 .dm12 { transform:translateX(-50%) rotate(330deg) }
+#h5 .hand-hour {
+  position:absolute; left:50%; bottom:50%; width:3px; height:26px;
+  background:linear-gradient(to top,#d4af37,rgba(212,175,55,.5));
+  transform-origin:50% 100%; transform:translateX(-50%) rotate(60deg);
+  border-radius:2px 2px 0 0;
+}
+#h5 .hand-min {
+  position:absolute; left:50%; bottom:50%; width:2px; height:34px;
+  background:linear-gradient(to top,#fff,rgba(255,255,255,.5));
+  transform-origin:50% 100%; transform:translateX(-50%) rotate(150deg);
+  border-radius:1px 1px 0 0;
+  animation:spin3d 60s linear infinite;
+}
+#h5 .hand-sec {
+  position:absolute; left:50%; bottom:50%; width:1px; height:38px;
+  background:#ff4444;
+  transform-origin:50% 100%; transform:translateX(-50%) rotate(220deg);
+  animation:spin3d 10s linear infinite;
+}
+#h5 .center-dot {
+  position:absolute; left:50%; top:50%; width:6px; height:6px;
+  background:#d4af37; border-radius:50%;
+  transform:translate(-50%,-50%); z-index:5;
+}
+#h5 .watch-strap-t {
+  width:32px; height:20px; background:linear-gradient(to bottom,#1a1000,#0d0a00);
+  margin:0 auto; border-radius:3px 3px 0 0;
+}
+#h5 .watch-strap-b {
+  width:32px; height:20px; background:linear-gradient(to bottom,#0d0a00,#1a1000);
+  margin:0 auto; border-radius:0 0 3px 3px;
 }
 
-/* LAYOUT: Ghost-Zahl im Hintergrund, Text davor */
 #h5 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  padding: 52px 28px 44px;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  justify-content:center; padding:40px 145px 40px 28px;
 }
-#h5 .ghost-num {
-  position: absolute; right: -15px; top: 20px;
-  font-size: 180px; font-weight: 900; line-height: 1;
-  color: rgba(255,180,0,.1); letter-spacing: -10px;
-  animation: scaleIn 1s .2s both;
-  user-select: none;
+#h5 .ghost {
+  position:absolute; left:-20px; top:50%; transform:translateY(-50%);
+  font-size:200px; font-weight:900; line-height:1;
+  color:rgba(212,175,55,.07); user-select:none; white-space:nowrap;
+  animation:fadeIn 1s .2s both;
 }
 #h5 .eyebrow {
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(255,180,0,.9); margin-bottom: 14px;
-  animation: fadeIn .8s .3s both; position: relative; z-index: 2;
+  font-size:9px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(212,175,55,.9); margin-bottom:14px;
+  animation:slideL .8s .3s both; position:relative; z-index:2;
 }
 #h5 h1 {
-  font-size: 48px; font-weight: 900; color: #fff;
-  line-height: .95; text-transform: uppercase;
-  animation: fadeIn .8s .1s both; position: relative; z-index: 2;
-  text-shadow: 0 2px 30px rgba(255,120,0,.6);
+  font-size:42px; font-weight:900; color:#fff; line-height:1.0;
+  text-transform:uppercase;
+  text-shadow:0 0 40px rgba(212,175,55,.5);
+  animation:slideL .7s .1s both; position:relative; z-index:2;
 }
-#h5 .spacer { flex: 1; }
 #h5 .sub {
-  font-size: 12px; color: rgba(255,200,100,.8);
-  line-height: 1.65; max-width: 280px;
-  animation: fadeIn .8s .6s both;
+  margin-top:14px; font-size:12px; color:rgba(220,190,120,.8);
+  line-height:1.65; animation:slideL .8s .5s both; position:relative; z-index:2;
 }
 #h5 .cta {
-  margin-top: 20px; display: inline-block; padding: 14px 32px;
-  background: linear-gradient(135deg, #ff9900, #ff6600);
-  color: #fff; font-size: 11px; font-weight: 800;
-  letter-spacing: 2px; text-transform: uppercase; border-radius: 50px;
-  animation: fadeIn .8s .8s both;
-  box-shadow: 0 0 40px rgba(255,120,0,.5);
+  margin-top:22px; padding:12px 24px; width:fit-content;
+  background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(180,130,20,.2));
+  border:1px solid rgba(212,175,55,.5);
+  color:#d4af37; font-size:11px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase;
+  animation:slideL .8s .7s both; position:relative; z-index:2;
+  box-shadow:0 0 20px rgba(212,175,55,.2);
 }
 
-/* ══════════════════════════════════════════
-   HERO 6 — SCHNEEFALL  |  LAYOUT: Minimal Zentriert
-══════════════════════════════════════════ */
-#h6 { background: #08101c; }
+/* ═══════════════════════════════════
+   H6 — DIAMANT  |  Oben-unten Split
+═══════════════════════════════════ */
+#h6 { background:radial-gradient(ellipse at 50% 50%, #030310 0%, #010108 100%); }
 
-#h6 .sky {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 90% 90% at 50% -15%, rgba(100,150,255,.2) 0%, transparent 60%),
-    linear-gradient(180deg, #0a1520 0%, #12202e 100%);
+#h6 .diamond-wrap {
+  position:absolute; left:50%; top:42%; transform:translate(-50%,-50%);
+  animation:float 4s ease-in-out infinite;
 }
-.snowflake {
-  position: absolute; border-radius: 50%;
-  background: rgba(255,255,255,.85);
-  top: -10px;
-  animation: snowFall linear infinite;
+#h6 .diamond {
+  width:0; height:0;
+  border-left:55px solid transparent;
+  border-right:55px solid transparent;
+  border-bottom:45px solid rgba(150,100,255,.7);
+  position:relative; filter:drop-shadow(0 0 30px rgba(120,80,255,.6));
+  animation:rotateZ 8s linear infinite;
 }
-#h6 .s1  { left:5%;  width:3px; height:3px; animation-duration:7s; animation-delay:0s }
-#h6 .s2  { left:14%; width:5px; height:5px; animation-duration:9s; animation-delay:1.2s }
-#h6 .s3  { left:23%; width:3px; height:3px; animation-duration:6.5s; animation-delay:2.8s }
-#h6 .s4  { left:34%; width:6px; height:6px; animation-duration:5s; animation-delay:.4s }
-#h6 .s5  { left:43%; width:3px; height:3px; animation-duration:10s; animation-delay:1.8s }
-#h6 .s6  { left:54%; width:4px; height:4px; animation-duration:7s; animation-delay:3.2s }
-#h6 .s7  { left:63%; width:5px; height:5px; animation-duration:8.5s; animation-delay:.7s }
-#h6 .s8  { left:74%; width:3px; height:3px; animation-duration:6s; animation-delay:2s }
-#h6 .s9  { left:83%; width:4px; height:4px; animation-duration:5.5s; animation-delay:1s }
-#h6 .s10 { left:92%; width:3px; height:3px; animation-duration:9.5s; animation-delay:3.8s }
-#h6 .s11 { left:10%; width:5px; height:5px; animation-duration:7.5s; animation-delay:4.2s }
-#h6 .s12 { left:44%; width:3px; height:3px; animation-duration:6.5s; animation-delay:2.5s }
-#h6 .s13 { left:57%; width:4px; height:4px; animation-duration:8s; animation-delay:.2s }
-#h6 .s14 { left:78%; width:3px; height:3px; animation-duration:7s; animation-delay:3s }
-@keyframes snowFall {
-  0%   { transform:translateX(0) rotate(0deg); opacity:1 }
-  100% { top:730px; transform:translateX(25px) rotate(360deg); opacity:.3 }
+#h6 .diamond::after {
+  content:''; position:absolute; top:45px; left:-55px;
+  width:0; height:0;
+  border-left:55px solid transparent;
+  border-right:55px solid transparent;
+  border-top:30px solid rgba(100,60,220,.8);
+}
+#h6 .diamond-glow {
+  position:absolute; width:120px; height:120px; border-radius:50%;
+  background:radial-gradient(circle,rgba(120,80,255,.25) 0%,transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  animation:glow 3s ease-in-out infinite;
 }
 
-/* LAYOUT: Alles zentriert, Trennlinie, super minimalistisch */
-#h6 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 40px; z-index: 5;
+#h6 .top-section {
+  position:absolute; top:0; left:0; right:0; height:46%;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  z-index:10;
 }
-#h6 .icon { font-size: 44px; margin-bottom: 20px; animation: fadeIn .8s .2s both; }
 #h6 .eyebrow {
-  font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
-  color: rgba(150,200,255,.8); margin-bottom: 16px;
-  animation: fadeIn .8s .3s both;
+  position:absolute; top:22px; left:0; right:0;
+  text-align:center;
+  font-size:8px; letter-spacing:5px; text-transform:uppercase;
+  color:rgba(255,255,255,.35); animation:fadeIn .8s .3s both;
+}
+
+#h6 .bottom-section {
+  position:absolute; bottom:0; left:0; right:0; height:54%;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:24px 28px 48px; z-index:10;
+  background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%);
 }
 #h6 h1 {
-  font-size: 38px; font-weight: 200; color: #fff;
-  line-height: 1.1; letter-spacing: 7px; text-transform: uppercase;
-  animation: fadeIn 1s .5s both;
-}
-#h6 .divider {
-  width: 0; height: 1px;
-  background: rgba(150,200,255,.5); margin: 20px auto;
-  animation: widen 1s .7s both;
+  font-size:50px; font-weight:900; line-height:.95;
+  text-transform:uppercase;
+  background:linear-gradient(135deg,#ff6ec7,#7b61ff,#00cfff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; animation:fadeIn 1s .7s both;
 }
 #h6 .sub {
-  font-size: 12px; color: rgba(140,200,255,.7);
-  line-height: 1.75; max-width: 240px;
-  animation: fadeIn .8s .9s both;
+  margin-top:16px; font-size:12px; color:rgba(200,180,255,.7);
+  line-height:1.65; max-width:290px; animation:fadeIn .8s .9s both;
 }
 #h6 .cta {
-  margin-top: 28px; padding: 12px 30px;
-  background: rgba(140,200,255,.08);
-  border: 1px solid rgba(140,200,255,.3);
-  color: #a0c8ff; font-size: 10px; font-weight: 600;
-  letter-spacing: 3px; text-transform: uppercase;
-  animation: fadeIn .8s 1.1s both;
+  margin-top:20px; padding:12px 30px; width:fit-content;
+  background:linear-gradient(135deg,rgba(255,110,199,.15),rgba(123,97,255,.15));
+  border:1px solid rgba(200,150,255,.4);
+  color:#d4a8ff; font-size:11px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase; border-radius:50px;
+  animation:fadeIn .8s 1.1s both;
+  box-shadow:0 0 30px rgba(123,97,255,.3);
 }
 
-/* ══════════════════════════════════════════
-   HERO 7 — LAVA  |  LAYOUT: CTA schwebt in der Mitte
-══════════════════════════════════════════ */
-#h7 { background: #0d0200; }
-
-#h7 .lava {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 90% 85% at 50% 125%, rgba(255,80,0,1) 0%, rgba(180,20,0,.85) 22%, rgba(80,5,0,.6) 52%, transparent 80%),
-    radial-gradient(ellipse 65% 45% at 18% 82%, rgba(255,40,0,.5) 0%, transparent 52%),
-    radial-gradient(ellipse 55% 45% at 82% 72%, rgba(255,100,0,.4) 0%, transparent 52%);
-  animation: lavaPulse 3.2s ease-in-out infinite alternate;
-}
-@keyframes lavaPulse {
-  0%   { filter:brightness(.8) hue-rotate(-6deg) }
-  100% { filter:brightness(1.25) hue-rotate(6deg) }
-}
-#h7 .lava-cracks {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
-  background:
-    repeating-linear-gradient(-45deg,
-      transparent, transparent 42px,
-      rgba(255,80,0,.05) 42px, rgba(255,80,0,.05) 43px);
-  animation: crackGlow 2s ease-in-out infinite alternate;
-}
-@keyframes crackGlow { 0% { opacity:.3 } 100% { opacity:.8 } }
-#h7 .ember {
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(2px 2px at 25% 75%, rgba(255,200,0,.9) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 55% 68%, rgba(255,180,0,.7) 0%, transparent 100%),
-    radial-gradient(2px 2px at 70% 78%, rgba(255,220,50,.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 82%, rgba(255,200,0,.6) 0%, transparent 100%),
-    radial-gradient(2px 2px at 80% 65%, rgba(255,150,0,.9) 0%, transparent 100%);
-  animation: emberFloat 3s ease-in-out infinite alternate;
-}
-@keyframes emberFloat {
-  0%   { transform:translateY(0); opacity:.6 }
-  100% { transform:translateY(-35px); opacity:1 }
+/* ═══════════════════════════════════
+   H7 — LIPPENSTIFT  |  CTA schwebt
+═══════════════════════════════════ */
+#h7 { background:radial-gradient(ellipse at 50% 70%, #200010 0%, #0d0008 50%, #000 100%); }
+#h7 .pink-glow {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 70% 80% at 50% 80%, rgba(255,50,120,.2) 0%, transparent 65%);
+  animation:glow 4s ease-in-out infinite;
 }
 
-/* LAYOUT: Titel oben, schwebendes CTA-Button in der Mitte */
+/* Lippenstift aus CSS */
+#h7 .lipstick-wrap {
+  position:absolute; left:50%; top:30%; transform:translate(-50%,-50%);
+  animation:float 4.5s ease-in-out infinite;
+}
+#h7 .ls-cap {
+  width:22px; height:50px; margin:0 auto;
+  background:linear-gradient(145deg,#c0a0b0,#8a6070,#c0a0b0);
+  border-radius:4px 4px 0 0;
+  box-shadow:inset 2px 0 4px rgba(255,255,255,.3);
+}
+#h7 .ls-body {
+  width:28px; height:80px;
+  background:linear-gradient(145deg,#b08090,#703050,#b08090);
+  border-radius:0 0 4px 4px; margin:0 auto; position:relative;
+  box-shadow:0 0 30px rgba(255,80,150,.3), inset 2px 0 6px rgba(255,255,255,.2);
+}
+#h7 .ls-body::before {
+  content:''; position:absolute; top:20px; left:4px; right:4px; height:1px;
+  background:rgba(255,150,180,.4);
+}
+#h7 .ls-body::after {
+  content:''; position:absolute; top:28px; left:4px; right:4px; height:1px;
+  background:rgba(255,150,180,.3);
+}
+#h7 .ls-tip {
+  width:18px; height:22px; margin:0 auto;
+  background:linear-gradient(145deg,#ff6090,#cc2060,#ff6090);
+  border-radius:0 0 6px 6px; transform:translateY(-2px);
+  box-shadow:0 0 20px rgba(255,50,100,.6);
+}
+#h7 .ls-glow {
+  width:50px; height:8px; margin:0 auto; margin-top:10px;
+  background:radial-gradient(ellipse,rgba(255,80,150,.3) 0%,transparent 70%);
+  animation:pulse 4.5s ease-in-out infinite;
+}
+
 #h7 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  padding: 54px 28px 50px;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  padding:52px 28px 48px;
 }
 #h7 .eyebrow {
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(255,150,0,.9); margin-bottom: 12px;
-  animation: fadeIn .8s .2s both;
+  font-size:9px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(255,150,180,.9); margin-bottom:12px; animation:fadeIn .8s .2s both;
 }
 #h7 h1 {
-  font-size: 62px; font-weight: 900; color: #fff;
-  line-height: .88; text-transform: uppercase;
-  animation: fadeIn .8s both;
-  text-shadow: 0 0 80px rgba(255,60,0,.9), 0 0 150px rgba(255,60,0,.4);
+  font-size:54px; font-weight:900; color:#fff; line-height:.9;
+  text-transform:uppercase;
+  text-shadow:0 0 60px rgba(255,80,150,.7);
+  animation:fadeIn .8s both;
 }
 #h7 .float-btn {
-  position: absolute; left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 17px 40px;
-  background: rgba(255,60,0,.18);
-  border: 2px solid rgba(255,100,0,.85);
-  color: #ff8040; font-size: 14px; font-weight: 800;
-  letter-spacing: 3px; text-transform: uppercase;
-  border-radius: 4px; text-align: center;
-  animation: btnPulse 2s ease-in-out infinite;
-  box-shadow: 0 0 40px rgba(255,80,0,.5), inset 0 0 40px rgba(255,80,0,.12);
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  padding:16px 36px;
+  background:rgba(255,50,120,.15); border:2px solid rgba(255,80,150,.8);
+  color:#ff5090; font-size:13px; font-weight:800;
+  letter-spacing:3px; text-transform:uppercase; border-radius:4px;
+  animation:btnPulse 2.2s ease-in-out infinite;
+  box-shadow:0 0 40px rgba(255,80,150,.4), inset 0 0 30px rgba(255,80,150,.1);
+  white-space:nowrap;
 }
 @keyframes btnPulse {
-  0%,100% { box-shadow:0 0 40px rgba(255,80,0,.5), inset 0 0 40px rgba(255,80,0,.12) }
-  50%      { box-shadow:0 0 70px rgba(255,80,0,.8), inset 0 0 60px rgba(255,80,0,.25) }
+  0%,100%{box-shadow:0 0 40px rgba(255,80,150,.4),inset 0 0 30px rgba(255,80,150,.1)}
+  50%    {box-shadow:0 0 70px rgba(255,80,150,.7),inset 0 0 50px rgba(255,80,150,.2)}
 }
-#h7 .spacer { flex: 1; }
+#h7 .spacer { flex:1; }
 #h7 .sub {
-  font-size: 12px; color: rgba(255,200,100,.75);
-  line-height: 1.65; max-width: 260px;
-  animation: fadeIn .8s 1s both;
+  font-size:12px; color:rgba(255,180,200,.75);
+  line-height:1.65; max-width:260px; animation:fadeIn .8s 1s both;
 }
 
-/* ══════════════════════════════════════════
-   HERO 8 — GALAXY  |  LAYOUT: Oben rechts
-══════════════════════════════════════════ */
-#h8 { background: #030008; }
+/* ═══════════════════════════════════
+   H8 — KOPFHÖRER  |  Terminal
+═══════════════════════════════════ */
+#h8 { background:#000; }
+#h8 .noise {
+  position:absolute; inset:0; opacity:.55;
+  overflow:hidden;
+}
+.mcol {
+  position:absolute; top:-120px;
+  font-family:monospace; font-size:13px; line-height:1;
+  color:#00ff41; text-shadow:0 0 6px #00ff41;
+  animation:matFall linear infinite;
+  writing-mode:vertical-rl; letter-spacing:4px; user-select:none;
+}
+@keyframes matFall { 0%{top:-120px;opacity:1} 100%{top:840px;opacity:.15} }
+.c1{left:4%;animation-duration:3.2s;animation-delay:0s;font-size:11px}
+.c2{left:12%;animation-duration:4.8s;animation-delay:1.1s;font-size:14px}
+.c3{left:21%;animation-duration:3.6s;animation-delay:.5s}
+.c4{left:30%;animation-duration:5.2s;animation-delay:2.2s;font-size:12px}
+.c5{left:39%;animation-duration:3.1s;animation-delay:1.6s}
+.c6{left:48%;animation-duration:4.4s;animation-delay:.3s;font-size:15px}
+.c7{left:57%;animation-duration:5.5s;animation-delay:2.8s;font-size:11px}
+.c8{left:65%;animation-duration:3.8s;animation-delay:1.3s}
+.c9{left:74%;animation-duration:4.2s;animation-delay:.9s;font-size:12px}
+.c10{left:83%;animation-duration:3.3s;animation-delay:3.2s;font-size:14px}
+.c11{left:91%;animation-duration:4.7s;animation-delay:1.9s}
 
-#h8 .galaxy {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 130% 130% at 85% 15%, rgba(60,0,130,.9) 0%, transparent 60%),
-    radial-gradient(ellipse 90% 90% at 15% 85%, rgba(0,40,110,.7) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 70% at 60% 55%, rgba(90,0,90,.5) 0%, transparent 60%);
-  animation: galaxySpin 12s linear infinite;
+/* Kopfhörer aus CSS */
+#h8 .headphones {
+  position:absolute; left:50%; top:32%; transform:translate(-50%,-50%);
+  width:120px; height:100px;
+  animation:float 4s ease-in-out infinite;
 }
-@keyframes galaxySpin {
-  0%   { filter:hue-rotate(0deg) }
-  100% { filter:hue-rotate(25deg) }
+#h8 .hp-band {
+  position:absolute; top:0; left:10px; right:10px; height:50px;
+  border:6px solid #1a1a1a; border-bottom:none; border-radius:60px 60px 0 0;
+  box-shadow:0 0 20px rgba(0,255,65,.2), inset 0 2px 8px rgba(255,255,255,.05);
 }
-#h8 .starfield {
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 8% 12%, #fff 0%, transparent 100%),
-    radial-gradient(1px 1px at 18% 7%, rgba(255,255,255,.7) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 32% 22%, #fff 0%, transparent 100%),
-    radial-gradient(1px 1px at 52% 6%, rgba(255,255,255,.9) 0%, transparent 100%),
-    radial-gradient(1px 1px at 67% 17%, rgba(255,255,255,.6) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 78% 9%, #fff 0%, transparent 100%),
-    radial-gradient(1px 1px at 91% 14%, rgba(255,255,255,.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 12% 35%, rgba(255,255,255,.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 45% 30%, rgba(255,200,255,.9) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 40%, rgba(200,200,255,.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 25% 55%, rgba(255,255,255,.6) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 60% 48%, rgba(255,255,255,.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 72% 60%, rgba(255,200,255,.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 38% 70%, rgba(255,255,255,.5) 0%, transparent 100%),
-    radial-gradient(2px 2px at 88% 65%, rgba(200,200,255,.8) 0%, transparent 100%),
-    radial-gradient(1px 1px at 5% 75%, rgba(255,255,255,.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 55% 82%, rgba(255,255,255,.7) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 95% 88%, rgba(255,200,255,.9) 0%, transparent 100%),
-    radial-gradient(1px 1px at 22% 92%, rgba(255,255,255,.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 95%, rgba(255,255,255,.6) 0%, transparent 100%);
-  animation: twinkle 4.5s ease-in-out infinite alternate;
+#h8 .hp-band::after {
+  content:''; position:absolute; top:5px; left:10px; right:10px; height:8px;
+  border:2px solid rgba(0,255,65,.2); border-bottom:none; border-radius:40px 40px 0 0;
 }
-#h8 .nebula {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 55% 35% at 30% 40%, rgba(150,0,200,.2) 0%, transparent 100%),
-    radial-gradient(ellipse 45% 45% at 72% 28%, rgba(0,100,200,.15) 0%, transparent 100%);
-  animation: nebulaPulse 7s ease-in-out infinite alternate;
+#h8 .hp-l {
+  position:absolute; left:0; bottom:0; width:40px; height:58px;
+  background:linear-gradient(145deg,#1a1a1a,#0d0d0d);
+  border-radius:12px; border:1px solid rgba(0,255,65,.2);
+  box-shadow:0 0 20px rgba(0,255,65,.3);
 }
-@keyframes nebulaPulse { 0% { opacity:.4 } 100% { opacity:1 } }
+#h8 .hp-l-inner {
+  position:absolute; top:8px; left:6px; right:6px; bottom:8px;
+  border-radius:8px; background:radial-gradient(circle,rgba(0,255,65,.1) 0%,transparent 70%);
+  border:1px solid rgba(0,255,65,.15);
+  animation:glow 2s ease-in-out infinite;
+}
+#h8 .hp-r {
+  position:absolute; right:0; bottom:0; width:40px; height:58px;
+  background:linear-gradient(145deg,#1a1a1a,#0d0d0d);
+  border-radius:12px; border:1px solid rgba(0,255,65,.2);
+  box-shadow:0 0 20px rgba(0,255,65,.3);
+}
+#h8 .hp-r-inner {
+  position:absolute; top:8px; left:6px; right:6px; bottom:8px;
+  border-radius:8px; background:radial-gradient(circle,rgba(0,255,65,.1) 0%,transparent 70%);
+  border:1px solid rgba(0,255,65,.15);
+  animation:glow 2s ease-in-out infinite .5s;
+}
+#h8 .hp-shadow {
+  width:80px; height:10px; margin:4px auto 0;
+  background:radial-gradient(ellipse,rgba(0,255,65,.2) 0%,transparent 70%);
+  animation:pulse 4s ease-in-out infinite;
+}
 
-/* LAYOUT: Text oben rechts */
-#h8 .content {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: flex-end; padding: 54px 28px 40px;
-  text-align: right;
-  background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 55%);
+#h8 .terminal {
+  position:absolute; inset:55px 22px 45px;
+  border:1px solid rgba(0,255,65,.25);
+  background:rgba(0,0,0,.9);
+  padding:22px; display:flex; flex-direction:column; justify-content:flex-end;
+  box-shadow:0 0 40px rgba(0,255,65,.1);
+  animation:fadeIn .5s .3s both;
 }
-#h8 .eyebrow {
-  font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(180,100,255,.9); margin-bottom: 12px;
-  animation: slideRight .8s .2s both;
+#h8 .t-bar {
+  position:absolute; top:0; left:0; right:0; padding:8px 14px;
+  font-family:monospace; font-size:9px;
+  color:rgba(0,255,65,.4); letter-spacing:1px;
+  border-bottom:1px solid rgba(0,255,65,.15);
+  background:rgba(0,255,65,.03);
 }
 #h8 h1 {
-  font-size: 46px; font-weight: 900; color: #fff;
-  line-height: 1.0; text-transform: uppercase;
-  animation: slideRight .7s both;
-  text-shadow: 0 0 50px rgba(150,0,255,.7);
+  font-family:monospace; font-size:36px; font-weight:700;
+  color:#00ff41; text-transform:uppercase;
+  letter-spacing:1px; line-height:1.05;
+  text-shadow:0 0 20px rgba(0,255,65,.5);
+  animation:typeIn 1.8s .6s both; overflow:hidden;
 }
+@keyframes typeIn { from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0% 0 0)} }
+#h8 .cur {
+  display:inline-block; width:3px; height:36px;
+  background:#00ff41; vertical-align:bottom; margin-left:4px;
+  animation:blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 #h8 .sub {
-  margin-top: 14px; font-size: 12px; color: rgba(180,150,255,.8);
-  line-height: 1.65; max-width: 220px;
-  animation: slideRight .8s .4s both;
+  margin-top:18px; font-family:monospace; font-size:11px;
+  color:rgba(0,255,65,.65); line-height:1.9;
+  animation:fadeIn .8s 1.8s both;
 }
+#h8 .sub span { color:rgba(0,255,65,.3) }
 #h8 .cta {
-  margin-top: 22px; padding: 11px 24px;
-  background: rgba(150,0,255,.18);
-  border: 1px solid rgba(150,50,255,.65);
-  color: #c080ff; font-size: 11px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  border-radius: 50px; animation: slideRight .8s .6s both;
-  box-shadow: 0 0 25px rgba(150,0,255,.35);
+  margin-top:20px; font-family:monospace; font-size:12px;
+  color:#000; background:#00ff41; padding:9px 20px;
+  letter-spacing:1px; border-radius:2px; width:fit-content;
+  animation:fadeIn .8s 2.2s both;
 }
 
-/* ══════════════════════════════════════════
-   HERO 9 — MATRIX  |  LAYOUT: Terminal-Box
-══════════════════════════════════════════ */
-#h9 { background: #000; }
+/* ═══════════════════════════════════
+   H9 — FLASCHE/DRINK  |  Rechts ausgerichtet
+═══════════════════════════════════ */
+#h9 { background:radial-gradient(ellipse at 30% 50%, #001a0d 0%, #000d06 60%, #000 100%); }
+#h9 .bg-glow {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 80% at 70% 50%, rgba(0,200,100,.12) 0%, transparent 65%);
+  animation:glow 4s ease-in-out infinite;
+}
 
-#h9 .rain { position: absolute; inset: 0; overflow: hidden; opacity:.55; }
-.mcol {
-  position: absolute; top: -120px;
-  font-family: monospace; font-size: 13px;
-  color: #00ff41; text-shadow: 0 0 6px #00ff41;
-  animation: matrixFall linear infinite;
-  writing-mode: vertical-rl; letter-spacing: 4px;
-  user-select: none; line-height: 1;
+/* Trinkflasche aus CSS */
+#h9 .bottle-wrap {
+  position:absolute; right:35px; top:50%; transform:translateY(-50%);
+  animation:float 4s ease-in-out infinite;
 }
-@keyframes matrixFall {
-  0%   { top:-120px; opacity:1 }
-  100% { top:840px; opacity:.2 }
+#h9 .b-cap {
+  width:22px; height:16px; margin:0 auto;
+  background:linear-gradient(145deg,#00cc66,#008844);
+  border-radius:4px 4px 0 0;
+  box-shadow:0 0 10px rgba(0,200,100,.4);
 }
-#h9 .c1  { left:4%;  animation-duration:3.2s; animation-delay:0s;    font-size:11px }
-#h9 .c2  { left:12%; animation-duration:4.8s; animation-delay:1.1s;  font-size:14px }
-#h9 .c3  { left:21%; animation-duration:3.6s; animation-delay:.5s }
-#h9 .c4  { left:30%; animation-duration:5.2s; animation-delay:2.2s;  font-size:12px }
-#h9 .c5  { left:39%; animation-duration:3.1s; animation-delay:1.6s }
-#h9 .c6  { left:48%; animation-duration:4.4s; animation-delay:.3s;   font-size:15px }
-#h9 .c7  { left:57%; animation-duration:5.5s; animation-delay:2.8s;  font-size:11px }
-#h9 .c8  { left:65%; animation-duration:3.8s; animation-delay:1.3s }
-#h9 .c9  { left:74%; animation-duration:4.2s; animation-delay:.9s;   font-size:12px }
-#h9 .c10 { left:83%; animation-duration:3.3s; animation-delay:3.2s;  font-size:14px }
-#h9 .c11 { left:91%; animation-duration:4.7s; animation-delay:1.9s }
+#h9 .b-neck {
+  width:18px; height:20px; margin:0 auto;
+  background:linear-gradient(145deg,#e8f8f0,#b8e8cc);
+  border-radius:2px;
+}
+#h9 .b-body {
+  width:50px; height:130px; margin:0 auto;
+  background:linear-gradient(145deg,rgba(0,200,100,.4),rgba(0,150,70,.6),rgba(0,100,50,.5));
+  border-radius:6px 6px 10px 10px;
+  border:1px solid rgba(0,200,100,.4);
+  position:relative; overflow:hidden;
+  box-shadow:0 0 30px rgba(0,200,100,.3), inset 4px 0 12px rgba(255,255,255,.15);
+}
+#h9 .b-liquid {
+  position:absolute; bottom:0; left:0; right:0; height:65%;
+  background:linear-gradient(to top,rgba(0,200,80,.8),rgba(0,220,100,.4));
+  animation:liquidWave 3s ease-in-out infinite;
+}
+@keyframes liquidWave {
+  0%,100%{height:65%;border-radius:30% 30% 0 0/8px 8px 0 0}
+  50%    {height:68%;border-radius:50% 50% 0 0/12px 12px 0 0}
+}
+#h9 .b-shine {
+  position:absolute; top:10px; left:8px; width:6px; height:50px;
+  background:rgba(255,255,255,.25); border-radius:3px;
+}
+#h9 .b-label {
+  position:absolute; top:25px; left:6px; right:6px; bottom:40px;
+  background:rgba(255,255,255,.08); border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:7px; letter-spacing:1px; color:rgba(255,255,255,.5);
+  text-transform:uppercase; writing-mode:vertical-rl;
+}
+#h9 .b-shadow {
+  width:40px; height:8px; margin:3px auto 0;
+  background:radial-gradient(ellipse,rgba(0,200,100,.25) 0%,transparent 70%);
+}
 
-#h9 .terminal {
-  position: absolute; inset: 55px 22px;
-  border: 1px solid rgba(0,255,65,.3);
-  background: rgba(0,0,0,.88);
-  padding: 26px; display: flex; flex-direction: column;
-  justify-content: center;
-  box-shadow: 0 0 50px rgba(0,255,65,.1), inset 0 0 50px rgba(0,255,65,.04);
-  animation: fadeIn .5s .3s both;
+#h9 .content {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  justify-content:center; padding:40px 105px 40px 28px;
 }
-#h9 .t-bar {
-  font-family: monospace; font-size: 9px;
-  color: rgba(0,255,65,.45); letter-spacing: 2px;
-  margin-bottom: 22px; padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0,255,65,.18);
+#h9 .eyebrow {
+  font-size:9px; letter-spacing:4px; text-transform:uppercase;
+  color:rgba(0,220,100,.9); margin-bottom:12px; animation:slideL .8s .3s both;
 }
 #h9 h1 {
-  font-family: monospace; font-size: 38px; font-weight: 700;
-  color: #00ff41; text-transform: uppercase;
-  letter-spacing: 2px; line-height: 1.05;
-  text-shadow: 0 0 25px rgba(0,255,65,.5);
-  animation: typeIn 1.8s .6s both;
-  overflow: hidden;
+  font-size:44px; font-weight:900; color:#fff; line-height:1.0;
+  text-transform:uppercase;
+  text-shadow:0 0 40px rgba(0,200,80,.6);
+  animation:slideL .7s .1s both;
 }
-@keyframes typeIn {
-  from { clip-path:inset(0 100% 0 0) }
-  to   { clip-path:inset(0 0% 0 0) }
-}
-#h9 .cursor {
-  display: inline-block; width: 3px; height: 38px;
-  background: #00ff41; vertical-align: bottom; margin-left: 4px;
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink { 0%,100% { opacity:1 } 50% { opacity:0 } }
 #h9 .sub {
-  margin-top: 22px; font-family: monospace; font-size: 11px;
-  color: rgba(0,255,65,.7); line-height: 1.9;
-  animation: fadeIn .8s 1.8s both;
+  margin-top:14px; font-size:12px; color:rgba(120,230,160,.8);
+  line-height:1.65; animation:slideL .8s .5s both;
 }
-#h9 .sub span { color: rgba(0,255,65,.35); }
 #h9 .cta {
-  margin-top: 24px; font-family: monospace; font-size: 12px;
-  color: #000; background: #00ff41;
-  padding: 10px 22px; letter-spacing: 1px;
-  border-radius: 2px; width: fit-content;
-  animation: fadeIn .8s 2.2s both;
+  margin-top:22px; padding:11px 24px; width:fit-content;
+  background:rgba(0,200,100,.15); border:1px solid rgba(0,200,80,.5);
+  color:#00c864; font-size:11px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase;
+  animation:slideL .8s .7s both;
 }
 
-/* ══════════════════════════════════════════
-   HERO 10 — PRISMA  |  LAYOUT: Icon oben, Text unten
-══════════════════════════════════════════ */
-#h10 { background: #030308; }
+/* ═══════════════════════════════════
+   H10 — WÜRFEL/BOX  |  Zentriert 3D-Rotation
+═══════════════════════════════════ */
+#h10 { background:radial-gradient(ellipse at 50% 40%, #0a0520 0%, #050210 50%, #000 100%); }
 
-#h10 .prism {
-  position: absolute; inset: 0;
-  background: conic-gradient(from 120deg at 50% 50%,
-    rgba(255,0,100,.35) 0deg,
-    rgba(255,150,0,.25) 60deg,
-    rgba(0,200,100,.35) 120deg,
-    rgba(0,100,255,.35) 180deg,
-    rgba(150,0,255,.35) 240deg,
-    rgba(255,0,100,.35) 360deg);
-  animation: prismRotate 7s linear infinite;
-  mix-blend-mode: screen;
+#h10 .cube-wrap {
+  position:absolute; left:50%; top:38%; transform:translate(-50%,-50%);
+  perspective:400px;
 }
-@keyframes prismRotate {
-  0%   { transform:rotate(0deg) scale(1) }
-  50%  { transform:rotate(180deg) scale(1.4) }
-  100% { transform:rotate(360deg) scale(1) }
+#h10 .cube {
+  width:90px; height:90px;
+  transform-style:preserve-3d;
+  animation:rotateCube 6s linear infinite;
 }
-#h10 .prism-glow {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(255,255,255,.06) 0%, transparent 70%);
-  animation: prismGlow 4s ease-in-out infinite alternate;
+@keyframes rotateCube {
+  0%  { transform:rotateX(-20deg) rotateY(0deg) }
+  100%{ transform:rotateX(-20deg) rotateY(360deg) }
 }
-@keyframes prismGlow { 0% { opacity:.4 } 100% { opacity:1 } }
-#h10 .dark { position: absolute; inset: 0; background: rgba(3,3,8,.62); }
+#h10 .face {
+  position:absolute; width:90px; height:90px;
+  border:1px solid rgba(120,80,255,.5);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px;
+}
+#h10 .front  { background:rgba(100,60,220,.2); transform:translateZ(45px) }
+#h10 .back   { background:rgba(80,40,200,.2);  transform:rotateY(180deg) translateZ(45px) }
+#h10 .left   { background:rgba(120,70,240,.15);transform:rotateY(-90deg) translateZ(45px) }
+#h10 .right  { background:rgba(140,90,255,.15);transform:rotateY(90deg)  translateZ(45px) }
+#h10 .top    { background:rgba(160,110,255,.2); transform:rotateX(90deg)  translateZ(45px) }
+#h10 .bottom { background:rgba(90,50,200,.15);  transform:rotateX(-90deg) translateZ(45px) }
+#h10 .cube-glow {
+  position:absolute; left:50%; top:38%; transform:translate(-50%,-50%);
+  width:160px; height:160px; border-radius:50%;
+  background:radial-gradient(circle,rgba(120,80,255,.2) 0%,transparent 70%);
+  animation:glow 3s ease-in-out infinite;
+}
 
-/* LAYOUT: Horizontale Teilung — Icon oben, Text unten */
-#h10 .top {
-  position: absolute; top: 0; left: 0; right: 0; height: 44%;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; z-index: 10;
-  border-bottom: 1px solid rgba(255,255,255,.07);
+#h10 .content {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-end;
+  text-align:center; padding:28px 32px 50px;
 }
 #h10 .eyebrow {
-  font-size: 8px; letter-spacing: 5px; text-transform: uppercase;
-  color: rgba(255,255,255,.4); margin-bottom: 14px;
-  animation: fadeIn .8s .3s both;
-}
-#h10 .big-icon {
-  font-size: 54px; animation: scaleIn 1.2s .5s both;
-  filter: drop-shadow(0 0 24px rgba(200,100,255,.7));
-}
-#h10 .bottom {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 56%;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 28px 28px 44px; z-index: 10;
-  background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 100%);
+  font-size:9px; letter-spacing:5px; text-transform:uppercase;
+  color:rgba(160,120,255,.9); margin-bottom:12px; animation:fadeIn 1s .5s both;
 }
 #h10 h1 {
-  font-size: 50px; font-weight: 900; line-height: .95;
-  text-transform: uppercase;
-  animation: fadeIn 1s .7s both;
-  background: linear-gradient(135deg, #ff6ec7, #7b61ff, #00cfff);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size:44px; font-weight:900; color:#fff; line-height:.95;
+  background:linear-gradient(135deg,#a070ff,#6040cc,#c090ff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; animation:fadeUp 1s .3s both;
 }
 #h10 .sub {
-  margin-top: 16px; font-size: 12px; color: rgba(200,180,255,.75);
-  line-height: 1.65; max-width: 300px;
-  animation: fadeIn .8s .9s both;
+  margin-top:14px; font-size:12px; color:rgba(180,150,255,.75);
+  line-height:1.65; max-width:260px; animation:fadeIn 1s .7s both;
 }
 #h10 .cta {
-  margin-top: 20px; padding: 12px 30px; width: fit-content;
-  background: linear-gradient(135deg, rgba(255,110,199,.18), rgba(123,97,255,.18));
-  border: 1px solid rgba(200,150,255,.4);
-  color: #d4a8ff; font-size: 11px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  border-radius: 50px; animation: fadeIn .8s 1.1s both;
-  box-shadow: 0 0 35px rgba(123,97,255,.35);
+  margin-top:22px; padding:13px 34px;
+  background:linear-gradient(135deg,rgba(120,80,255,.25),rgba(80,40,200,.25));
+  border:1px solid rgba(150,100,255,.5);
+  color:#c0a0ff; font-size:11px; font-weight:800;
+  letter-spacing:2px; text-transform:uppercase; border-radius:50px;
+  animation:fadeIn 1s .9s both;
+  box-shadow:0 0 30px rgba(120,80,255,.35);
 }
 </style>
 </head>
 <body>
+
+<!-- ── HAMBURGER BANNER ── -->
+<div id="banner">
+  <div class="logo">Insta<span>heros</span></div>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+  <div id="nav-menu">
+    <a href="#">Home</a>
+    <a href="#">Heroes</a>
+    <a href="#">Portfolio</a>
+    <a href="#">Preise</a>
+    <a href="#">Kontakt</a>
+  </div>
+</div>
+
+<!-- ── STAGE ── -->
 <div id="stage">
   <div id="progress-wrap"><div id="progress-bar"></div></div>
 
-  <!-- ── HERO 1: AURORA ── -->
+  <!-- H1: PARFUM -->
   <div class="hero active" id="h1">
-    <div class="aurora"></div>
-    <div class="stars"></div>
+    <div class="glow-orb"></div>
+    <div class="bottle">
+      <div class="bottle-cap"></div>
+      <div class="bottle-neck"></div>
+      <div class="bottle-body">
+        <div class="bottle-label">No.5</div>
+      </div>
+    </div>
     <div class="content">
-      <div class="badge">✦</div>
-      <div class="eyebrow">Nordlichter · Kollektion</div>
-      <h1>AURORA<br>VITAE</h1>
-      <p class="sub">Wo Himmel und Traum sich berühren. Entdecke die Schönheit des Moments.</p>
-      <div class="cta">Jetzt entdecken</div>
+      <div class="eyebrow">Luxury · Duft · Exklusiv</div>
+      <h1>NOIR<br>LUMIÈRE</h1>
+      <p class="sub">Ein Hauch von Ewigkeit. Dein unverwechselbarer Duft für jeden Moment.</p>
+      <div class="cta">Entdecken</div>
     </div>
   </div>
 
-  <!-- ── HERO 2: FIRE ── -->
+  <!-- H2: SNEAKER -->
   <div class="hero" id="h2">
-    <div class="fire"></div>
-    <div class="fire2"></div>
-    <div class="sparks"></div>
+    <div class="floor-glow"></div>
+    <div class="shoe">
+      <div class="lace"></div>
+      <div class="upper"></div>
+      <div class="toe"></div>
+      <div class="midsole"></div>
+      <div class="sole"></div>
+    </div>
+    <div class="shadow"></div>
     <div class="content">
-      <div class="eyebrow">Feuer · Leidenschaft</div>
-      <h1>BRENN<br>LOS.</h1>
+      <div class="eyebrow">Sport · Street · Style</div>
+      <h1>RUN<br>FREE.</h1>
       <div class="spacer"></div>
       <div class="bottom">
-        <p class="sub">Deine Energie. Dein Feuer. Nichts kann dich aufhalten.</p>
-        <div class="cta">Starten</div>
+        <p class="sub">Speed trifft Design. Für die, die nie stehen bleiben.</p>
+        <div class="cta">Shop now</div>
       </div>
     </div>
   </div>
 
-  <!-- ── HERO 3: OCEAN ── -->
+  <!-- H3: SMARTPHONE -->
   <div class="hero" id="h3">
-    <div class="ocean-bg"></div>
-    <div class="wave"></div>
-    <div class="wave2"></div>
-    <div class="vline"></div>
+    <div class="scan-line"></div>
+    <div class="phone-wrap" style="position:absolute;right:28px;top:50%;transform:translateY(-50%)">
+      <div class="phone">
+        <div class="watch-strap-t" style="width:32px;height:0"></div>
+        <div class="phone-body" id="h3pb">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="screen-content"></div>
+            <div class="app-grid">
+              <div class="app"></div><div class="app"></div><div class="app"></div>
+              <div class="app"></div><div class="app"></div><div class="app"></div>
+            </div>
+            <div class="home-bar"></div>
+          </div>
+        </div>
+        <div class="phone-shadow"></div>
+      </div>
+    </div>
     <div class="content">
-      <div class="eyebrow">Tiefsee · Entdeckung</div>
-      <h1>TIEF<br>TAUCHEN</h1>
-      <p class="sub">Der Ozean hält Geheimnisse, die auf dich warten. Wage den Sprung.</p>
-      <div class="cta">Erkunden →</div>
+      <div class="eyebrow">Tech · Next Level</div>
+      <h1>ULTRA<br>PRO X</h1>
+      <p class="sub">Performance ohne Kompromisse. Das nächste Kapitel beginnt hier.</p>
+      <div class="cta">Jetzt vorbestellen</div>
     </div>
   </div>
 
-  <!-- ── HERO 4: NEON GRID ── -->
+  <!-- H4: KAFFEE -->
   <div class="hero" id="h4">
-    <div class="grid"></div>
-    <div class="scan"></div>
-    <div class="glow-right"></div>
-    <div class="panel">
-      <div class="eyebrow">Future · Tech · City</div>
-      <h1>NEO<br>URBAN</h1>
-      <p class="sub">Die Stadt der Zukunft pulsiert. Sei Teil der Revolution.</p>
-      <div class="cta">Einsteigen</div>
+    <div class="warm-glow"></div>
+    <div class="cup-wrap">
+      <div class="steam-w">
+        <i></i><i></i><i></i>
+      </div>
+      <div class="cup">
+        <div class="coffee-top"></div>
+        <div class="handle"></div>
+      </div>
+      <div class="saucer"></div>
     </div>
-  </div>
-
-  <!-- ── HERO 5: GOLDEN HOUR ── -->
-  <div class="hero" id="h5">
-    <div class="golden"></div>
-    <div class="rays"></div>
     <div class="content">
-      <div class="ghost-num">24</div>
-      <div class="eyebrow">Golden Hour · Sunset</div>
-      <h1>MAGIC<br>HOUR</h1>
-      <div class="spacer"></div>
-      <p class="sub">24 Stunden voller Magie. Nutze jeden Augenblick bevor das Licht erlischt.</p>
-      <div class="cta">Mehr erfahren</div>
-    </div>
-  </div>
-
-  <!-- ── HERO 6: SNOWFALL ── -->
-  <div class="hero" id="h6">
-    <div class="sky"></div>
-    <div class="snowflake s1"></div><div class="snowflake s2"></div>
-    <div class="snowflake s3"></div><div class="snowflake s4"></div>
-    <div class="snowflake s5"></div><div class="snowflake s6"></div>
-    <div class="snowflake s7"></div><div class="snowflake s8"></div>
-    <div class="snowflake s9"></div><div class="snowflake s10"></div>
-    <div class="snowflake s11"></div><div class="snowflake s12"></div>
-    <div class="snowflake s13"></div><div class="snowflake s14"></div>
-    <div class="content">
-      <div class="icon">❄</div>
-      <div class="eyebrow">Winter · Stille · Reinheit</div>
-      <h1>PURE<br>STILL</h1>
+      <div class="eyebrow">Kaffee · Lifestyle · Genuss</div>
+      <h1>PURE<br>BREW</h1>
       <div class="divider"></div>
-      <p class="sub">In der Stille des Winters liegt die reinste Form der Schönheit.</p>
-      <div class="cta">Innehalten</div>
+      <p class="sub">Jede Tasse ein Moment. Lass dich von echtem Kaffeegenuss verführen.</p>
+      <div class="cta">Bestellen</div>
     </div>
   </div>
 
-  <!-- ── HERO 7: LAVA ── -->
-  <div class="hero" id="h7">
-    <div class="lava"></div>
-    <div class="lava-cracks"></div>
-    <div class="ember"></div>
+  <!-- H5: UHR -->
+  <div class="hero" id="h5">
+    <div class="watch-wrap">
+      <div class="watch-strap-t"></div>
+      <div class="watch-case">
+        <div class="watch-face">
+          <div class="dial-mark"></div>
+          <div class="dial-mark dm2"></div><div class="dial-mark dm3"></div>
+          <div class="dial-mark dm4"></div><div class="dial-mark dm5"></div>
+          <div class="dial-mark dm6"></div><div class="dial-mark dm7"></div>
+          <div class="dial-mark dm8"></div><div class="dial-mark dm9"></div>
+          <div class="dial-mark dm10"></div><div class="dial-mark dm11"></div>
+          <div class="dial-mark dm12"></div>
+          <div class="hand-hour"></div>
+          <div class="hand-min"></div>
+          <div class="hand-sec"></div>
+          <div class="center-dot"></div>
+        </div>
+      </div>
+      <div class="watch-strap-b"></div>
+    </div>
     <div class="content">
-      <div class="eyebrow">Energie · Power · Flow</div>
-      <h1>LAVA<br>FLOW</h1>
+      <div class="ghost">24</div>
+      <div class="eyebrow">Swiss · Prestige · Zeit</div>
+      <h1>MASTER<br>CHRONO</h1>
+      <p class="sub">Meisterhafte Schweizer Präzision. Jede Sekunde zählt — trage sie mit Stolz.</p>
+      <div class="cta">Kollektion</div>
+    </div>
+  </div>
+
+  <!-- H6: DIAMANT -->
+  <div class="hero" id="h6">
+    <div class="diamond-wrap">
+      <div class="diamond-glow"></div>
+      <div class="diamond"></div>
+    </div>
+    <div class="top-section">
+      <div class="eyebrow">Crystal · Licht · Luxus</div>
+    </div>
+    <div class="bottom-section">
+      <h1>PRISM<br>LUXURY</h1>
+      <p class="sub">Licht bricht sich in tausend Farben. So wie du — einzigartig und strahlend.</p>
+      <div class="cta">Kollektion ansehen</div>
+    </div>
+  </div>
+
+  <!-- H7: LIPPENSTIFT -->
+  <div class="hero" id="h7">
+    <div class="pink-glow"></div>
+    <div class="lipstick-wrap">
+      <div class="ls-cap"></div>
+      <div class="ls-tip"></div>
+      <div class="ls-body"></div>
+      <div class="ls-glow"></div>
+    </div>
+    <div class="content">
+      <div class="eyebrow">Beauty · Bold · Power</div>
+      <h1>RED<br>VELVET</h1>
       <div class="float-btn">JETZT KAUFEN</div>
       <div class="spacer"></div>
-      <p class="sub">Unbändige Kraft, die von innen kommt. Entfessle dein volles Potenzial.</p>
+      <p class="sub">Sei unaufhaltsam. Dein Statement. Deine Farbe. Deine Kraft.</p>
     </div>
   </div>
 
-  <!-- ── HERO 8: GALAXY ── -->
+  <!-- H8: KOPFHÖRER / MATRIX -->
   <div class="hero" id="h8">
-    <div class="galaxy"></div>
-    <div class="starfield"></div>
-    <div class="nebula"></div>
-    <div class="content">
-      <div class="eyebrow">Galaxie · Unendlich</div>
-      <h1>STELLAR<br>RISE</h1>
-      <p class="sub">Jenseits der Sterne liegt deine wahre Bestimmung. Greife nach dem Universum.</p>
-      <div class="cta">Starte deine Reise</div>
-    </div>
-  </div>
-
-  <!-- ── HERO 9: MATRIX ── -->
-  <div class="hero" id="h9">
-    <div class="rain">
+    <div class="noise">
       <div class="mcol c1">10110110 11001100</div>
       <div class="mcol c2">01001101 01000001</div>
       <div class="mcol c3">11010110 00110011</div>
@@ -989,31 +1178,63 @@ body {
       <div class="mcol c10">01011010 11001011</div>
       <div class="mcol c11">11010100 01001011</div>
     </div>
+    <div class="headphones">
+      <div class="hp-band"></div>
+      <div class="hp-l"><div class="hp-l-inner"></div></div>
+      <div class="hp-r"><div class="hp-r-inner"></div></div>
+    </div>
+    <div class="hp-shadow" style="position:absolute;left:50%;transform:translateX(-50%);top:calc(32% + 60px)"></div>
     <div class="terminal">
-      <div class="t-bar">SYSTEM://INSTAHEROS.AI ~ ACCESS GRANTED</div>
-      <h1>HACK<br>THE<br>FEED<span class="cursor"></span></h1>
+      <div class="t-bar">SYSTEM://SOUND.AI ~ CONNECTED</div>
+      <h1>PURE<br>SOUND<span class="cur"></span></h1>
       <p class="sub">
-        <span>&gt; </span>Loading viral content...<br>
-        <span>&gt; </span>Optimizing reach...<br>
-        <span>&gt; </span>Ready to dominate.
+        <span>&gt; </span>Bass level... MAX<br>
+        <span>&gt; </span>Noise cancel... ON<br>
+        <span>&gt; </span>Vibes... LOADED
       </p>
-      <div class="cta">EXECUTE</div>
+      <div class="cta">CONNECT</div>
     </div>
   </div>
 
-  <!-- ── HERO 10: PRISMA ── -->
-  <div class="hero" id="h10">
-    <div class="prism"></div>
-    <div class="prism-glow"></div>
-    <div class="dark"></div>
-    <div class="top">
-      <div class="eyebrow">Crystal · Licht · Spektrum</div>
-      <div class="big-icon">💎</div>
+  <!-- H9: TRINKFLASCHE -->
+  <div class="hero" id="h9">
+    <div class="bg-glow"></div>
+    <div class="bottle-wrap">
+      <div class="b-cap"></div>
+      <div class="b-neck"></div>
+      <div class="b-body">
+        <div class="b-liquid"></div>
+        <div class="b-shine"></div>
+        <div class="b-label">Hydro</div>
+      </div>
+      <div class="b-shadow"></div>
     </div>
-    <div class="bottom">
-      <h1>PRISM<br>LUXURY</h1>
-      <p class="sub">Licht bricht sich in tausend Farben. So wie du — einzigartig, strahlend, unvergleichlich.</p>
-      <div class="cta">Kollektion ansehen</div>
+    <div class="content">
+      <div class="eyebrow">Hydration · Health · Flow</div>
+      <h1>STAY<br>HYDRATED</h1>
+      <p class="sub">Trink mehr. Lebe besser. Dein täglicher Begleiter für mehr Energie.</p>
+      <div class="cta">Jetzt kaufen</div>
+    </div>
+  </div>
+
+  <!-- H10: 3D WÜRFEL -->
+  <div class="hero" id="h10">
+    <div class="cube-glow"></div>
+    <div class="cube-wrap">
+      <div class="cube">
+        <div class="face front">✦</div>
+        <div class="face back">◈</div>
+        <div class="face left">⬡</div>
+        <div class="face right">◉</div>
+        <div class="face top">▲</div>
+        <div class="face bottom">●</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="eyebrow">3D · Digital · Future</div>
+      <h1>META<br>VERSE</h1>
+      <p class="sub">Die Zukunft ist jetzt. Tauche ein in eine Welt ohne Grenzen.</p>
+      <div class="cta">Einsteigen</div>
     </div>
   </div>
 
@@ -1032,30 +1253,39 @@ body {
 </div>
 
 <script>
-  const heroes = document.querySelectorAll('.hero');
-  const dots   = document.querySelectorAll('.dot');
-  const bar    = document.getElementById('progress-bar');
-  const DURATION = 6000;
-  let current = 0, startTime = null;
+const heroes = document.querySelectorAll('.hero');
+const dots   = document.querySelectorAll('.dot');
+const bar    = document.getElementById('progress-bar');
+const DURATION = 6000;
+let current = 0, startTime = null;
 
-  function goTo(idx) {
-    heroes[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = idx;
-    heroes[current].classList.add('active');
-    dots[current].classList.add('active');
-    startTime = null;
-    bar.style.width = '0%';
-  }
+function goTo(idx) {
+  heroes[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = idx;
+  heroes[current].classList.add('active');
+  dots[current].classList.add('active');
+  startTime = null;
+  bar.style.width = '0%';
+}
 
-  function tick(ts) {
-    if (!startTime) startTime = ts;
-    const pct = Math.min(100, ((ts - startTime) / DURATION) * 100);
-    bar.style.width = pct + '%';
-    if (ts - startTime >= DURATION) goTo((current + 1) % heroes.length);
-    requestAnimationFrame(tick);
-  }
+function tick(ts) {
+  if (!startTime) startTime = ts;
+  const pct = Math.min(100, ((ts - startTime) / DURATION) * 100);
+  bar.style.width = pct + '%';
+  if (ts - startTime >= DURATION) goTo((current + 1) % heroes.length);
   requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+function toggleMenu() {
+  document.getElementById('nav-menu').classList.toggle('open');
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#banner')) {
+    document.getElementById('nav-menu').classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>
