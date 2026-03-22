@@ -397,6 +397,182 @@
   #h20 h1 { animation: fadeUp 1s .5s both; color: #d4af37; letter-spacing: 2px; }
   #h20 .tag, #h20 p { animation: fadeUp 1s .7s both; }
 
+  /* ===================== HERO 21 – WINTER FREEZE ===================== */
+  #h21 .bg { animation: h21-freeze 5s ease-in-out forwards; }
+  @keyframes h21-freeze {
+    0%   { transform: scale(1.1); filter: brightness(0.7) saturate(0.3) hue-rotate(200deg); }
+    100% { transform: scale(1.02); filter: brightness(1) saturate(0.8) hue-rotate(200deg); }
+  }
+  #h21 .overlay { background: linear-gradient(to top, rgba(0,20,60,0.85) 0%, transparent 55%); }
+  #h21 h1 { animation: fadeUp 1s .5s both; color: #aee9ff; letter-spacing: 2px; }
+  #h21 .tag, #h21 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 22 – DESERT HEAT ===================== */
+  #h22 .bg { animation: h22-heat 5s ease-in-out forwards; }
+  @keyframes h22-heat {
+    0%   { transform: scale(1.05) translateY(2%); filter: brightness(0.6) saturate(1.8) sepia(0.4); }
+    50%  { filter: brightness(1.1) saturate(2) sepia(0.2); }
+    100% { transform: scale(1.12) translateY(0); filter: brightness(1.2) saturate(1.5) sepia(0); }
+  }
+  #h22 .haze {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(255,150,0,0.15) 0%, transparent 40%);
+    animation: hazeWave 5s ease-in-out forwards;
+  }
+  @keyframes hazeWave {
+    0%,100% { opacity: 0.4; }
+    50%      { opacity: 0.9; }
+  }
+  #h22 .overlay { background: linear-gradient(to top, rgba(80,30,0,0.8) 0%, transparent 50%); }
+  #h22 h1 { animation: fadeUp 1s .5s both; color: #ffcc66; }
+  #h22 .tag, #h22 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 23 – CONCERT STROBE ===================== */
+  #h23 .bg { animation: h23-strobe 5s steps(1) forwards; }
+  @keyframes h23-strobe {
+    0%   { filter: brightness(0.6) hue-rotate(0deg); }
+    8%   { filter: brightness(2) hue-rotate(60deg); }
+    9%   { filter: brightness(0.5) hue-rotate(120deg); }
+    16%  { filter: brightness(1.8) hue-rotate(180deg); }
+    17%  { filter: brightness(0.5) hue-rotate(240deg); }
+    24%  { filter: brightness(2) hue-rotate(300deg); }
+    25%  { filter: brightness(0.6) hue-rotate(0deg); }
+    100% { filter: brightness(1) hue-rotate(0deg); }
+  }
+  #h23 .overlay { background: linear-gradient(to top, rgba(20,0,40,0.7) 0%, transparent 50%); }
+  #h23 h1 { animation: fadeUp 1s .3s both; color: #ff44ff; text-shadow: 0 0 20px #ff44ff; }
+  #h23 .tag, #h23 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 24 – TRAVEL HORIZON ===================== */
+  #h24 .bg { animation: h24-scan 5s ease-in-out forwards; }
+  @keyframes h24-scan {
+    0%   { transform: translateX(-6%) scale(1.12); filter: brightness(0.8); }
+    100% { transform: translateX(0%) scale(1.02); filter: brightness(1.1); }
+  }
+  #h24 .overlay { background: linear-gradient(to top, rgba(0,30,60,0.7) 0%, rgba(0,10,30,0.3) 50%, transparent 80%); }
+  #h24 h1 { animation: slideLeft 1s .4s both; color: #fff; }
+  #h24 .tag, #h24 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 25 – PET BOUNCE ===================== */
+  #h25 .bg { animation: h25-bounce 5s ease-in-out forwards; }
+  @keyframes h25-bounce {
+    0%   { transform: scale(1.15); filter: saturate(0.8) brightness(0.8); }
+    30%  { transform: scale(1.05) translateY(-3%); }
+    60%  { transform: scale(1.08) translateY(0); }
+    100% { transform: scale(1.02); filter: saturate(1.3) brightness(1.1); }
+  }
+  #h25 .overlay { background: linear-gradient(to top, rgba(40,10,0,0.7) 0%, transparent 55%); }
+  #h25 h1 { animation: fadeUp 1s .5s both; color: #ffdd99; }
+  #h25 .tag, #h25 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 26 – ARCHITECTURE GRID ===================== */
+  #h26 .bg { animation: h26-grid 5s ease-in-out forwards; }
+  @keyframes h26-grid {
+    0%   { transform: scale(1.2) rotate(-1deg); filter: contrast(1.4) brightness(0.7); }
+    100% { transform: scale(1) rotate(0deg); filter: contrast(1.1) brightness(1); }
+  }
+  #h26 .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridFade 5s ease-in forwards;
+  }
+  @keyframes gridFade {
+    0%   { opacity: 0.8; }
+    100% { opacity: 0.1; }
+  }
+  #h26 .overlay { background: linear-gradient(to top, rgba(5,5,20,0.85) 0%, transparent 55%); }
+  #h26 h1 { animation: slideLeft 1s .5s both; color: #c8e0ff; letter-spacing: 3px; font-weight: 300; }
+  #h26 .tag, #h26 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 27 – ART COLOR SPLASH ===================== */
+  #h27 .bg { animation: h27-splash 5s ease-in-out forwards; }
+  @keyframes h27-splash {
+    0%   { transform: scale(1.1); filter: saturate(0) brightness(0.6); }
+    40%  { filter: saturate(0.5) brightness(0.8); }
+    100% { transform: scale(1.02); filter: saturate(2) brightness(1.1); }
+  }
+  #h27 .overlay { background: linear-gradient(135deg, rgba(60,0,80,0.6) 0%, rgba(0,0,0,0.5) 100%); }
+  #h27 h1 { animation: fadeUp 1s .8s both; color: #ff88ff; font-style: italic; }
+  #h27 .tag, #h27 p { animation: fadeUp 1s 1s both; }
+
+  /* ===================== HERO 28 – GAMING NEON ===================== */
+  #h28 .bg { animation: h28-neon 5s ease-in-out forwards; }
+  @keyframes h28-neon {
+    0%   { transform: scale(1.05); filter: brightness(0.4) saturate(2) hue-rotate(0deg); }
+    25%  { filter: brightness(0.6) saturate(2.5) hue-rotate(30deg); }
+    50%  { filter: brightness(0.8) saturate(3) hue-rotate(-20deg); }
+    100% { transform: scale(1); filter: brightness(1) saturate(2) hue-rotate(0deg); }
+  }
+  #h28 .scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: rgba(0,255,120,0.5);
+    animation: scanMove 2.5s linear 2;
+    box-shadow: 0 0 8px rgba(0,255,120,0.8);
+  }
+  @keyframes scanMove {
+    0%   { top: 0; }
+    100% { top: 100%; }
+  }
+  #h28 .overlay { background: linear-gradient(to top, rgba(0,10,20,0.85) 0%, transparent 55%); }
+  #h28 h1 { animation: fadeUp 1s .4s both; color: #00ff88; text-shadow: 0 0 15px #00ff88; }
+  #h28 .tag, #h28 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 29 – VINTAGE FILM ===================== */
+  #h29 .bg { animation: h29-vintage 5s ease-in-out forwards; }
+  @keyframes h29-vintage {
+    0%   { transform: scale(1.08); filter: sepia(0.8) contrast(1.3) brightness(0.7); }
+    100% { transform: scale(1); filter: sepia(0.4) contrast(1.1) brightness(1); }
+  }
+  #h29 .grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    background-size: 256px;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+  }
+  #h29 .overlay { background: linear-gradient(to top, rgba(30,15,0,0.8) 0%, transparent 55%); }
+  #h29 h1 { animation: fadeUp 1s .5s both; color: #f0d898; font-style: italic; font-weight: 300; letter-spacing: 4px; }
+  #h29 .tag, #h29 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 30 – CYBERPUNK ===================== */
+  #h30 .bg { animation: h30-cyber 5s steps(1) forwards; }
+  @keyframes h30-cyber {
+    0%   { transform: scale(1.05); filter: brightness(0.5) hue-rotate(0deg) saturate(3); }
+    5%   { transform: translate(4px,0) scale(1.05); }
+    6%   { transform: translate(-4px,0) scale(1.05); }
+    7%   { transform: translate(0,0) scale(1.05); }
+    50%  { filter: brightness(0.8) hue-rotate(30deg) saturate(3); }
+    100% { transform: scale(1.01); filter: brightness(1) hue-rotate(0deg) saturate(2.5); }
+  }
+  #h30 .cyber-lines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,255,255,0.03) 2px,
+      rgba(0,255,255,0.03) 4px
+    );
+    animation: cyberFlicker 5s steps(1) forwards;
+  }
+  @keyframes cyberFlicker {
+    0%,100% { opacity: 0.8; }
+    5%       { opacity: 0.2; }
+    6%       { opacity: 1; }
+    50%      { opacity: 0.6; }
+  }
+  #h30 .overlay { background: linear-gradient(to top, rgba(0,10,20,0.9) 0%, transparent 55%); }
+  #h30 h1 { animation: glitchText 5s forwards; color: #00ffff; text-shadow: 2px 0 #ff0080, -2px 0 #00ffff; letter-spacing: 1px; }
+  #h30 .tag, #h30 p { animation: fadeUp 1s .4s both; color: rgba(0,255,200,0.8); }
+
   /* ===================== SHARED ANIMATIONS ===================== */
   @keyframes fadeUp {
     0%   { opacity: 0; transform: translateY(30px); }
@@ -617,6 +793,111 @@
       <p>Luxus ist eine Haltung, kein Preis.</p>
     </div>
   </div>
+
+  <!-- HERO 21 – WINTER FREEZE -->
+  <div class="hero" id="h21">
+    <div class="bg" style="background: linear-gradient(160deg,#001a3a 0%,#003d7a 40%,#0066bb 60%,#aae0ff 80%,#e8f6ff 100%)"></div>
+    <div class="overlay">
+      <span class="tag">21 / Winter</span>
+      <h1>Ice &amp; Fire</h1>
+      <p>In der Stille des Winters liegt unendliche Kraft.</p>
+    </div>
+  </div>
+
+  <!-- HERO 22 – DESERT HEAT -->
+  <div class="hero" id="h22">
+    <div class="bg" style="background: linear-gradient(160deg,#4a2000 0%,#a05000 40%,#e08000 60%,#ffaa00 75%,#ff6600 100%)"></div>
+    <div class="haze"></div>
+    <div class="overlay">
+      <span class="tag">22 / Desert</span>
+      <h1>Sand &amp; Soul</h1>
+      <p>Die Wüste lehrt: Stärke entsteht durch Stille.</p>
+    </div>
+  </div>
+
+  <!-- HERO 23 – CONCERT STROBE -->
+  <div class="hero" id="h23">
+    <div class="bg" style="background: linear-gradient(160deg,#1a0033 0%,#440088 40%,#8800cc 55%,#cc00ff 70%,#0a001a 100%)"></div>
+    <div class="overlay">
+      <span class="tag">23 / Concert</span>
+      <h1>Live The Noise</h1>
+      <p>Musik ist der Rhythmus deiner Seele.</p>
+    </div>
+  </div>
+
+  <!-- HERO 24 – TRAVEL HORIZON -->
+  <div class="hero" id="h24">
+    <div class="bg" style="background: linear-gradient(160deg,#001430 0%,#003366 35%,#0066aa 55%,#00aadd 70%,#66ccff 85%,#001020 100%)"></div>
+    <div class="overlay">
+      <span class="tag">24 / Travel</span>
+      <h1>Beyond The Map</h1>
+      <p>Jede Reise beginnt dort, wo die Karte endet.</p>
+    </div>
+  </div>
+
+  <!-- HERO 25 – PET LOVE -->
+  <div class="hero" id="h25">
+    <div class="bg" style="background: linear-gradient(160deg,#3a1a00 0%,#7a3800 40%,#aa5500 60%,#dd8833 75%,#ff9944 100%)"></div>
+    <div class="overlay">
+      <span class="tag">25 / Pets</span>
+      <h1>Unconditional</h1>
+      <p>Wahre Liebe hat vier Pfoten.</p>
+    </div>
+  </div>
+
+  <!-- HERO 26 – ARCHITECTURE -->
+  <div class="hero" id="h26">
+    <div class="bg" style="background: linear-gradient(160deg,#050514 0%,#0a0a33 40%,#1a1a55 60%,#2a2a88 75%,#0505aa 100%)"></div>
+    <div class="grid-lines"></div>
+    <div class="overlay">
+      <span class="tag">26 / Design</span>
+      <h1>Form Follows</h1>
+      <p>Große Architektur erzählt Geschichten ohne Worte.</p>
+    </div>
+  </div>
+
+  <!-- HERO 27 – ART SPLASH -->
+  <div class="hero" id="h27">
+    <div class="bg" style="background: linear-gradient(160deg,#2a0040 0%,#6600aa 35%,#cc00cc 55%,#ff44ff 70%,#aa0088 85%,#100018 100%)"></div>
+    <div class="overlay">
+      <span class="tag">27 / Art</span>
+      <h1>Color Your World</h1>
+      <p>Kunst ist die Sprache derer, die keine Worte brauchen.</p>
+    </div>
+  </div>
+
+  <!-- HERO 28 – GAMING -->
+  <div class="hero" id="h28">
+    <div class="bg" style="background: linear-gradient(160deg,#000a05 0%,#001a0a 35%,#002a15 55%,#004422 70%,#00661a 85%,#000505 100%)"></div>
+    <div class="scan-line"></div>
+    <div class="overlay">
+      <span class="tag">28 / Gaming</span>
+      <h1>Game On</h1>
+      <p>Jedes Level ist nur ein Schritt zur Legende.</p>
+    </div>
+  </div>
+
+  <!-- HERO 29 – VINTAGE FILM -->
+  <div class="hero" id="h29">
+    <div class="bg" style="background: linear-gradient(160deg,#2a1a08 0%,#5a3818 40%,#7a5028 60%,#a06838 75%,#c08040 100%)"></div>
+    <div class="grain"></div>
+    <div class="overlay">
+      <span class="tag">29 / Vintage</span>
+      <h1>Timeless Frames</h1>
+      <p>Manche Momente verdienen kein Filter.</p>
+    </div>
+  </div>
+
+  <!-- HERO 30 – CYBERPUNK -->
+  <div class="hero" id="h30">
+    <div class="bg" style="background: linear-gradient(160deg,#000a15 0%,#001530 35%,#00253a 55%,#003348 70%,#004455 85%,#000508 100%)"></div>
+    <div class="cyber-lines"></div>
+    <div class="overlay">
+      <span class="tag">30 / Cyber</span>
+      <h1>Jack In</h1>
+      <p>Die Zukunft gehört denen, die jetzt einloggen.</p>
+    </div>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -646,7 +927,7 @@
     heroes[current] = clone;
     heroes[current].classList.add('active');
 
-    counter.textContent = `${current + 1} / 20`;
+    counter.textContent = `${current + 1} / ${heroes.length}`;
 
     // Progress bar
     bar.style.transition = 'none';
