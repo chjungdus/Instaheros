@@ -565,6 +565,70 @@
   #h30 h1 { animation: glitchText 5s forwards; color: #00ffff; text-shadow: 2px 0 #ff0080, -2px 0 #00ffff; letter-spacing: 1px; }
   #h30 .eyebrow, #h30 p { animation: fadeUp 1s .4s both; color: rgba(0,255,200,0.8); }
 
+  /* ===================== APPLE 3D PHOTO HEROES (1–10) ===================== */
+
+  /* Scene wrapper */
+  .hero .scene { position: absolute; inset: 0; overflow: hidden; }
+
+  /* Photo layer – slightly oversized so the 3D float doesn't clip */
+  .hero .bg-layer {
+    position: absolute;
+    inset: -8%;
+    transform-origin: center;
+  }
+  .hero .bg-layer img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Light-flare sweeps once at entry */
+  .hero .light-flare {
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.13) 50%, transparent 75%);
+    animation: flare-sweep 1.6s cubic-bezier(0.16,1,0.3,1) forwards;
+    pointer-events: none;
+  }
+  @keyframes flare-sweep {
+    from { transform: translateX(-130%) skewX(-15deg); }
+    to   { transform: translateX(230%) skewX(-15deg); }
+  }
+
+  /* Apple 3D entry – 3 variants */
+  @keyframes ai-a {
+    from { transform: perspective(900px) rotateX(8deg) rotateY(-6deg) scale(1.12); filter: brightness(0.45) blur(3px); }
+    to   { transform: perspective(900px) rotateX(0deg) rotateY(0deg)  scale(1);    filter: brightness(1)    blur(0);   }
+  }
+  @keyframes ai-b {
+    from { transform: perspective(900px) rotateX(-6deg) rotateY(8deg) scale(1.12); filter: brightness(0.40) blur(4px); }
+    to   { transform: perspective(900px) rotateX(0deg)  rotateY(0deg) scale(1);    filter: brightness(1)    blur(0);   }
+  }
+  @keyframes ai-c {
+    from { transform: perspective(900px) rotateY(-15deg) scale(1.10); filter: brightness(0.45) blur(2px); }
+    to   { transform: perspective(900px) rotateY(0deg)   scale(1);    filter: brightness(1)    blur(0);   }
+  }
+
+  /* Subtle float after entry */
+  @keyframes apple-float {
+    0%,100% { transform: perspective(900px) rotateX(0deg)    rotateY(0deg);    }
+    33%      { transform: perspective(900px) rotateX(1.2deg)  rotateY(-0.8deg); }
+    66%      { transform: perspective(900px) rotateX(-0.6deg) rotateY(1.2deg);  }
+  }
+
+  /* Assign animations */
+  #h1 .bg-layer, #h4 .bg-layer, #h7 .bg-layer, #h10 .bg-layer {
+    animation: ai-a 1.4s cubic-bezier(0.16,1,0.3,1) forwards,
+               apple-float 9s 1.4s ease-in-out infinite;
+  }
+  #h2 .bg-layer, #h5 .bg-layer, #h8 .bg-layer {
+    animation: ai-b 1.4s cubic-bezier(0.16,1,0.3,1) forwards,
+               apple-float 10s 1.4s ease-in-out infinite;
+  }
+  #h3 .bg-layer, #h6 .bg-layer, #h9 .bg-layer {
+    animation: ai-c 1.5s cubic-bezier(0.16,1,0.3,1) forwards,
+               apple-float 8s 1.5s ease-in-out infinite;
+  }
+
   /* ===================== SHARED ANIMATIONS ===================== */
   @keyframes fadeUp {
     0%   { opacity: 0; transform: translateY(30px); }
@@ -583,7 +647,10 @@
 
   <!-- HERO 1 – NATURE -->
   <div class="hero active" id="h1">
-    <div class="bg" style="background: linear-gradient(160deg,#1a7a3d 0%,#2ecc71 50%,#145c2a 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&h=900&fit=crop&auto=format&q=80" alt="Forest"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Natur &amp; Abenteuer</span>
       <h1>Into The Wild</h1>
@@ -594,7 +661,10 @@
 
   <!-- HERO 2 – CITY -->
   <div class="hero" id="h2">
-    <div class="bg" style="background: linear-gradient(160deg,#0d0d5e 0%,#2233cc 40%,#4455ff 70%,#0a0a3a 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&h=900&fit=crop&auto=format&q=80" alt="City Night"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Urban Living</span>
       <h1>City Never Sleeps</h1>
@@ -605,7 +675,10 @@
 
   <!-- HERO 3 – FASHION -->
   <div class="hero" id="h3">
-    <div class="bg" style="background: linear-gradient(160deg,#3a0a6e 0%,#8822cc 40%,#aa33ff 60%,#220044 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=900&fit=crop&auto=format&q=80" alt="Fashion"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="curtain"></div>
     <div class="overlay">
       <span class="eyebrow">New Collection</span>
@@ -617,7 +690,10 @@
 
   <!-- HERO 4 – FOOD -->
   <div class="hero" id="h4">
-    <div class="bg" style="background: linear-gradient(160deg,#7a2800 0%,#cc5500 40%,#ff8c00 60%,#3a1200 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=900&fit=crop&auto=format&q=80" alt="Food"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Gourmet Experience</span>
       <h1>Pure Pleasure</h1>
@@ -628,7 +704,10 @@
 
   <!-- HERO 5 – TECH -->
   <div class="hero" id="h5">
-    <div class="bg" style="background: linear-gradient(160deg,#003366 0%,#0066cc 40%,#00aaff 60%,#001a3a 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=900&fit=crop&auto=format&q=80" alt="Tech"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Innovation 2025</span>
       <h1>Future Is Now</h1>
@@ -639,7 +718,10 @@
 
   <!-- HERO 6 – OCEAN -->
   <div class="hero" id="h6">
-    <div class="bg" style="background: linear-gradient(160deg,#003d6e 0%,#0077bb 40%,#00aadd 60%,#001a2e 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=500&h=900&fit=crop&auto=format&q=80" alt="Ocean"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Ocean Collection</span>
       <h1>Deep Blue Soul</h1>
@@ -650,7 +732,10 @@
 
   <!-- HERO 7 – FITNESS -->
   <div class="hero" id="h7">
-    <div class="bg" style="background: linear-gradient(160deg,#5a0000 0%,#cc0000 40%,#ff2200 60%,#2a0000 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=900&fit=crop&auto=format&q=80" alt="Fitness"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Performance Series</span>
       <h1>No Pain No Gain</h1>
@@ -661,7 +746,10 @@
 
   <!-- HERO 8 – LUXURY -->
   <div class="hero" id="h8">
-    <div class="bg" style="background: linear-gradient(160deg,#3a2800 0%,#8b6914 40%,#c8a020 60%,#1a1200 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=900&fit=crop&auto=format&q=80" alt="Luxury"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="shimmer"></div>
     <div class="overlay">
       <span class="eyebrow">Premium Lifestyle</span>
@@ -673,7 +761,10 @@
 
   <!-- HERO 9 – NIGHTLIFE -->
   <div class="hero" id="h9">
-    <div class="bg" style="background: linear-gradient(160deg,#2a0055 0%,#6600bb 40%,#9933ff 60%,#110022 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=900&fit=crop&auto=format&q=80" alt="Night Concert"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="overlay">
       <span class="eyebrow">Nightlife &amp; Events</span>
       <h1>Feel The Beat</h1>
@@ -684,7 +775,10 @@
 
   <!-- HERO 10 – ADVENTURE -->
   <div class="hero" id="h10">
-    <div class="bg" style="background: linear-gradient(160deg,#0d1a33 0%,#2255aa 40%,#3388cc 60%,#05101e 100%)"></div>
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&h=900&fit=crop&auto=format&q=80" alt="Mountain"></div>
+      <div class="light-flare"></div>
+    </div>
     <div class="reveal"></div>
     <div class="overlay">
       <span class="eyebrow">Outdoor &amp; Expedition</span>
