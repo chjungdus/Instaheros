@@ -1,1 +1,1060 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instaheros – 20 Hero Animations</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+  }
+
+  #stage {
+    position: relative;
+    width: 405px;
+    height: 720px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 0 80px rgba(255,255,255,0.08);
+  }
+
+  .hero {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: hidden;
+  }
+  .hero.active { display: block; }
+
+  .hero .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 36px 28px 52px;
+  }
+
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 13px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(6px);
+    width: fit-content;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.05;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+  }
+
+  .hero .sub {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.65;
+    max-width: 320px;
+  }
+
+  .hero .cta {
+    margin-top: 22px;
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    padding: 11px 22px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    width: fit-content;
+    animation: fadeUp 1s 1s both;
+  }
+
+  /* PROGRESS BAR */
+  #progress-wrap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 50;
+    background: rgba(255,255,255,0.1);
+  }
+  #progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: none;
+  }
+
+  /* ===================== HERO 1 – ZOOM FOREST ===================== */
+  #h1 .bg { animation: h1-zoom 5s ease-in-out forwards; }
+  @keyframes h1-zoom {
+    0%   { transform: scale(1); }
+    100% { transform: scale(1.18); }
+  }
+  #h1 .overlay { background: linear-gradient(to top, rgba(0,20,0,0.85) 0%, transparent 60%); }
+  #h1 h1 { animation: fadeUp 1s .3s both; color: #a8ff78; }
+  #h1 .eyebrow { animation: fadeUp 1s .1s both; }
+  #h1 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 2 – CITY PARALLAX ===================== */
+  #h2 .bg { animation: h2-slide 5s ease-out forwards; }
+  @keyframes h2-slide {
+    0%   { transform: translateY(0) scale(1.1); }
+    100% { transform: translateY(-5%) scale(1.05); }
+  }
+  #h2 .overlay { background: linear-gradient(to top, rgba(0,0,100,0.6) 0%, transparent 55%); }
+  #h2 h1 { animation: slideLeft 1s .4s both; }
+  #h2 .eyebrow, #h2 p { animation: fadeUp 1s .2s both; }
+
+  /* ===================== HERO 3 – FASHION CURTAIN ===================== */
+  #h3 .curtain {
+    position: absolute;
+    inset: 0;
+    background: #1a0a2e;
+    transform-origin: top;
+    animation: curtainOpen 1.2s .2s cubic-bezier(.77,0,.18,1) forwards;
+  }
+  @keyframes curtainOpen {
+    0%   { transform: scaleY(1); }
+    100% { transform: scaleY(0); }
+  }
+  #h3 .bg { animation: h3-zoom 5s ease-in-out forwards; }
+  @keyframes h3-zoom {
+    0%   { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  #h3 .overlay { background: linear-gradient(135deg, rgba(90,0,50,0.6) 0%, rgba(0,0,0,0.7) 100%); }
+  #h3 h1 { animation: fadeUp 1s .8s both; font-style: italic; }
+  #h3 .eyebrow, #h3 p { animation: fadeUp 1s 1s both; }
+
+  /* ===================== HERO 4 – FOOD MACRO ===================== */
+  #h4 .bg { animation: h4-saturate 5s ease-in-out forwards; }
+  @keyframes h4-saturate {
+    0%   { transform: scale(1.15); filter: saturate(0.5) brightness(0.7); }
+    100% { transform: scale(1); filter: saturate(1.4) brightness(1); }
+  }
+  #h4 .overlay { background: linear-gradient(to top, rgba(80,20,0,0.85) 0%, transparent 50%); }
+  #h4 h1 { animation: fadeUp 1s .5s both; color: #ffb347; }
+  #h4 .eyebrow, #h4 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 5 – TECH GLITCH ===================== */
+  #h5 .bg { animation: h5-glitch 5s steps(1) forwards; }
+  @keyframes h5-glitch {
+    0%   { transform: translate(0,0) scale(1.05); filter: hue-rotate(0deg) brightness(1.2); }
+    10%  { transform: translate(-3px, 2px) scale(1.05); filter: hue-rotate(90deg) brightness(1.5); }
+    20%  { transform: translate(3px,-2px) scale(1.05); filter: hue-rotate(180deg) brightness(0.9); }
+    30%  { transform: translate(0, 0) scale(1.05); filter: hue-rotate(0deg) brightness(1.2); }
+    100% { transform: translate(0,0) scale(1); filter: hue-rotate(0deg) brightness(1); }
+  }
+  #h5 .overlay { background: linear-gradient(to top, rgba(0,40,80,0.6) 0%, transparent 55%); }
+  #h5 h1 { animation: glitchText 5s forwards; color: #00ffcc; }
+  @keyframes glitchText {
+    0%,100% { text-shadow: none; }
+    10% { text-shadow: 3px 0 #ff0040, -3px 0 #00ffcc; }
+    20% { text-shadow: -3px 0 #ff0040, 3px 0 #00ffcc; }
+    30% { text-shadow: none; }
+  }
+  #h5 .eyebrow, #h5 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 6 – OCEAN PAN ===================== */
+  #h6 .bg { animation: h6-pan 5s linear forwards; }
+  @keyframes h6-pan {
+    0%   { transform: translateX(-8%) scale(1.15); }
+    100% { transform: translateX(0%) scale(1.05); }
+  }
+  #h6 .overlay { background: linear-gradient(to top, rgba(0,40,80,0.85) 0%, transparent 50%); }
+  #h6 h1 { animation: fadeUp 1s .4s both; color: #7dd8ff; }
+  #h6 .eyebrow, #h6 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 7 – FITNESS SHAKE ===================== */
+  #h7 .bg { animation: h7-power 5s ease-in-out forwards; }
+  @keyframes h7-power {
+    0%   { transform: scale(1.2); filter: contrast(1.4) brightness(0.8); }
+    15%  { transform: scale(1.19) translate(2px,-2px); }
+    16%  { transform: scale(1.18) translate(-2px,2px); }
+    17%  { transform: scale(1.18) translate(0,0); }
+    100% { transform: scale(1); filter: contrast(1.1) brightness(1); }
+  }
+  #h7 .overlay { background: linear-gradient(to top, rgba(80,0,0,0.6) 0%, transparent 50%); }
+  #h7 h1 { animation: fadeUp 1s .3s both; color: #ff4444; }
+  #h7 .eyebrow, #h7 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 8 – LUXURY SHIMMER ===================== */
+  #h8 .bg { animation: h8-slow 5s ease-in-out forwards; }
+  @keyframes h8-slow {
+    0%   { transform: scale(1); filter: brightness(0.6) sepia(0.3); }
+    100% { transform: scale(1.08); filter: brightness(1) sepia(0); }
+  }
+  #h8 .shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,215,0,0.12) 50%, transparent 70%);
+    animation: shimmerMove 5s linear forwards;
+  }
+  @keyframes shimmerMove {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  #h8 .overlay { background: linear-gradient(to top, rgba(30,20,0,0.88) 0%, transparent 55%); }
+  #h8 h1 { animation: fadeUp 1s .5s both; color: #ffd700; }
+  #h8 .eyebrow, #h8 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 9 – NIGHT PULSE ===================== */
+  #h9 .bg { animation: h9-pulse 5s ease-in-out forwards; }
+  @keyframes h9-pulse {
+    0%,100% { transform: scale(1); filter: brightness(0.7); }
+    50%      { transform: scale(1.05); filter: brightness(1.1); }
+  }
+  #h9 .overlay { background: linear-gradient(to top, rgba(20,0,60,0.6) 0%, transparent 50%); }
+  #h9 h1 { animation: fadeUp 1s .4s both; color: #e040fb; }
+  #h9 .eyebrow, #h9 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 10 – MOUNTAIN REVEAL ===================== */
+  #h10 .reveal {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    animation: revealWipe 1.5s .1s cubic-bezier(.77,0,.18,1) forwards;
+    transform-origin: left;
+  }
+  @keyframes revealWipe {
+    0%   { transform: scaleX(1); }
+    100% { transform: scaleX(0); }
+  }
+  #h10 .bg { animation: h10-zoom 5s ease-in-out forwards; }
+  @keyframes h10-zoom {
+    0%   { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  #h10 .overlay { background: linear-gradient(to top, rgba(5,15,30,0.88) 0%, transparent 55%); }
+  #h10 h1 { animation: fadeUp 1s 1s both; color: #fff; }
+  #h10 .eyebrow, #h10 p { animation: fadeUp 1s 1.2s both; }
+
+  /* ===================== HERO 11 – MINIMAL SLOW ZOOM ===================== */
+  #h11 .bg { animation: h11-slow 5s ease-in-out forwards; }
+  @keyframes h11-slow {
+    0%   { transform: scale(1); filter: brightness(0.8) grayscale(0.3); }
+    100% { transform: scale(1.12); filter: brightness(1.1) grayscale(0); }
+  }
+  #h11 .overlay { background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%); }
+  #h11 h1 { animation: fadeUp 1s .5s both; font-weight: 300; letter-spacing: 6px; font-size: 36px; }
+  #h11 .eyebrow, #h11 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 12 – STREET GRUNGE ===================== */
+  #h12 .bg { animation: h12-slide 5s ease-out forwards; }
+  @keyframes h12-slide {
+    0%   { transform: translateY(6%) scale(1.1); filter: contrast(1.3) saturate(0.8); }
+    100% { transform: translateY(0) scale(1); filter: contrast(1) saturate(1); }
+  }
+  #h12 .overlay { background: linear-gradient(to top, rgba(20,10,0,0.65) 0%, transparent 50%); }
+  #h12 h1 { animation: slideLeft 1s .3s both; font-style: italic; color: #ff6b00; }
+  #h12 .eyebrow, #h12 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 13 – BEAUTY SOFT BLUR ===================== */
+  #h13 .bg { animation: h13-bloom 5s ease-in-out forwards; }
+  @keyframes h13-bloom {
+    0%   { transform: scale(1.1); filter: blur(8px) brightness(0.8) saturate(1.5); }
+    40%  { filter: blur(0px) brightness(1) saturate(1.3); }
+    100% { transform: scale(1.04); filter: blur(0px) brightness(1.05) saturate(1.2); }
+  }
+  #h13 .overlay { background: linear-gradient(to top, rgba(50,0,30,0.8) 0%, transparent 55%); }
+  #h13 h1 { animation: fadeUp 1s .5s both; color: #ffb3de; font-style: italic; }
+  #h13 .eyebrow, #h13 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 14 – MOTIVATION SUNRISE ===================== */
+  #h14 .bg { animation: h14-rise 5s ease-in-out forwards; }
+  @keyframes h14-rise {
+    0%   { transform: translateY(4%) scale(1.1); filter: brightness(0.5) saturate(2); }
+    100% { transform: translateY(0) scale(1); filter: brightness(1) saturate(1.3); }
+  }
+  #h14 .overlay { background: linear-gradient(to top, rgba(60,20,0,0.85) 0%, transparent 50%); }
+  #h14 h1 { animation: burnIn 5s forwards; color: #fff; }
+  @keyframes burnIn {
+    0%   { opacity: 0; text-shadow: 0 0 40px #ff8800; }
+    30%  { opacity: 1; text-shadow: 0 0 20px #ff8800; }
+    100% { text-shadow: 0 0 0px transparent; }
+  }
+  #h14 .eyebrow, #h14 p { animation: fadeUp 1s .8s both; }
+
+  /* ===================== HERO 15 – BEACH COLORSHIFT ===================== */
+  #h15 .bg { animation: h15-color 5s ease-in-out forwards; }
+  @keyframes h15-color {
+    0%   { transform: scale(1.05); filter: hue-rotate(0deg) saturate(1.2); }
+    50%  { filter: hue-rotate(20deg) saturate(1.5); }
+    100% { transform: scale(1); filter: hue-rotate(0deg) saturate(1.2); }
+  }
+  #h15 .overlay { background: linear-gradient(to top, rgba(80,30,0,0.8) 0%, transparent 55%); }
+  #h15 h1 { animation: fadeUp 1s .5s both; color: #ffecb3; }
+  #h15 .eyebrow, #h15 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 16 – DARK REVEAL FROM BLACK ===================== */
+  #h16 .bg { animation: h16-emerge 5s ease-in-out forwards; }
+  @keyframes h16-emerge {
+    0%   { transform: scale(1.15); filter: brightness(0) blur(15px); }
+    60%  { filter: brightness(1) blur(0px); }
+    100% { transform: scale(1.02); filter: brightness(0.9) blur(0px); }
+  }
+  #h16 .overlay { background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%); }
+  #h16 h1 { animation: fadeUp 1s 1.2s both; color: #ccc; font-weight: 300; letter-spacing: 5px; }
+  #h16 .eyebrow, #h16 p { animation: fadeUp 1s 1.4s both; }
+
+  /* ===================== HERO 17 – BLOSSOM DRIFT ===================== */
+  #h17 .bg { animation: h17-drift 5s ease-in-out forwards; }
+  @keyframes h17-drift {
+    0%   { transform: translateX(-4%) scale(1.1); filter: brightness(0.9); }
+    100% { transform: translateX(0) scale(1.02); filter: brightness(1.05); }
+  }
+  #h17 .overlay { background: linear-gradient(to top, rgba(60,0,30,0.75) 0%, transparent 55%); }
+  #h17 h1 { animation: fadeUp 1s .5s both; color: #ffcce0; font-style: italic; }
+  #h17 .eyebrow, #h17 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 18 – COFFEE STEAM ===================== */
+  #h18 .bg { animation: h18-warm 5s ease-in-out forwards; }
+  @keyframes h18-warm {
+    0%   { transform: scale(1.1); filter: saturate(0.6) brightness(0.7); }
+    100% { transform: scale(1.02); filter: saturate(1.3) brightness(1.05); }
+  }
+  #h18 .steam {
+    position: absolute;
+    top: 20%; left: 40%;
+    width: 60px; height: 120px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.25) 0%, transparent 70%);
+    animation: steamRise 5s ease-in forwards;
+  }
+  @keyframes steamRise {
+    0%   { transform: translateY(0) scaleX(1); opacity: 0; }
+    20%  { opacity: 0.6; }
+    100% { transform: translateY(-80px) scaleX(1.8); opacity: 0; }
+  }
+  #h18 .overlay { background: linear-gradient(to top, rgba(50,20,0,0.65) 0%, transparent 55%); }
+  #h18 h1 { animation: fadeUp 1s .5s both; color: #d4a55a; }
+  #h18 .eyebrow, #h18 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 19 – SPACE ZOOM OUT ===================== */
+  #h19 .bg { animation: h19-space 5s ease-in-out forwards; }
+  @keyframes h19-space {
+    0%   { transform: scale(1.3); filter: brightness(1.4) saturate(1.5); }
+    100% { transform: scale(1); filter: brightness(1) saturate(1); }
+  }
+  #h19 .overlay { background: linear-gradient(to top, rgba(0,0,40,0.65) 0%, transparent 50%); }
+  #h19 h1 { animation: fadeUp 1s .5s both; color: #aad4ff; letter-spacing: 3px; }
+  #h19 .eyebrow, #h19 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 20 – GOLD LUXURY ===================== */
+  #h20 .bg { animation: h20-gold 5s ease-in-out forwards; }
+  @keyframes h20-gold {
+    0%   { transform: scale(1.05); filter: brightness(0.6) saturate(0.5); }
+    100% { transform: scale(1.12); filter: brightness(1.1) saturate(1.4); }
+  }
+  #h20 .gold-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,175,55,0.12) 0%, transparent 50%, rgba(212,175,55,0.08) 100%);
+    animation: goldShift 5s ease-in-out forwards;
+  }
+  @keyframes goldShift {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  #h20 .overlay { background: linear-gradient(to top, rgba(20,10,0,0.88) 0%, transparent 55%); }
+  #h20 h1 { animation: fadeUp 1s .5s both; color: #d4af37; letter-spacing: 2px; }
+  #h20 .eyebrow, #h20 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 21 – WINTER FREEZE ===================== */
+  #h21 .bg { animation: h21-freeze 5s ease-in-out forwards; }
+  @keyframes h21-freeze {
+    0%   { transform: scale(1.1); filter: brightness(0.7) saturate(0.3) hue-rotate(200deg); }
+    100% { transform: scale(1.02); filter: brightness(1) saturate(0.8) hue-rotate(200deg); }
+  }
+  #h21 .overlay { background: linear-gradient(to top, rgba(0,20,60,0.85) 0%, transparent 55%); }
+  #h21 h1 { animation: fadeUp 1s .5s both; color: #aee9ff; letter-spacing: 2px; }
+  #h21 .eyebrow, #h21 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 22 – DESERT HEAT ===================== */
+  #h22 .bg { animation: h22-heat 5s ease-in-out forwards; }
+  @keyframes h22-heat {
+    0%   { transform: scale(1.05) translateY(2%); filter: brightness(0.6) saturate(1.8) sepia(0.4); }
+    50%  { filter: brightness(1.1) saturate(2) sepia(0.2); }
+    100% { transform: scale(1.12) translateY(0); filter: brightness(1.2) saturate(1.5) sepia(0); }
+  }
+  #h22 .haze {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(255,150,0,0.15) 0%, transparent 40%);
+    animation: hazeWave 5s ease-in-out forwards;
+  }
+  @keyframes hazeWave {
+    0%,100% { opacity: 0.4; }
+    50%      { opacity: 0.9; }
+  }
+  #h22 .overlay { background: linear-gradient(to top, rgba(80,30,0,0.8) 0%, transparent 50%); }
+  #h22 h1 { animation: fadeUp 1s .5s both; color: #ffcc66; }
+  #h22 .eyebrow, #h22 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 23 – CONCERT STROBE ===================== */
+  #h23 .bg { animation: h23-strobe 5s steps(1) forwards; }
+  @keyframes h23-strobe {
+    0%   { filter: brightness(0.6) hue-rotate(0deg); }
+    8%   { filter: brightness(2) hue-rotate(60deg); }
+    9%   { filter: brightness(0.5) hue-rotate(120deg); }
+    16%  { filter: brightness(1.8) hue-rotate(180deg); }
+    17%  { filter: brightness(0.5) hue-rotate(240deg); }
+    24%  { filter: brightness(2) hue-rotate(300deg); }
+    25%  { filter: brightness(0.6) hue-rotate(0deg); }
+    100% { filter: brightness(1) hue-rotate(0deg); }
+  }
+  #h23 .overlay { background: linear-gradient(to top, rgba(20,0,40,0.7) 0%, transparent 50%); }
+  #h23 h1 { animation: fadeUp 1s .3s both; color: #ff44ff; text-shadow: 0 0 20px #ff44ff; }
+  #h23 .eyebrow, #h23 p { animation: fadeUp 1s .5s both; }
+
+  /* ===================== HERO 24 – TRAVEL HORIZON ===================== */
+  #h24 .bg { animation: h24-scan 5s ease-in-out forwards; }
+  @keyframes h24-scan {
+    0%   { transform: translateX(-6%) scale(1.12); filter: brightness(0.8); }
+    100% { transform: translateX(0%) scale(1.02); filter: brightness(1.1); }
+  }
+  #h24 .overlay { background: linear-gradient(to top, rgba(0,30,60,0.7) 0%, rgba(0,10,30,0.3) 50%, transparent 80%); }
+  #h24 h1 { animation: slideLeft 1s .4s both; color: #fff; }
+  #h24 .eyebrow, #h24 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 25 – PET BOUNCE ===================== */
+  #h25 .bg { animation: h25-bounce 5s ease-in-out forwards; }
+  @keyframes h25-bounce {
+    0%   { transform: scale(1.15); filter: saturate(0.8) brightness(0.8); }
+    30%  { transform: scale(1.05) translateY(-3%); }
+    60%  { transform: scale(1.08) translateY(0); }
+    100% { transform: scale(1.02); filter: saturate(1.3) brightness(1.1); }
+  }
+  #h25 .overlay { background: linear-gradient(to top, rgba(40,10,0,0.7) 0%, transparent 55%); }
+  #h25 h1 { animation: fadeUp 1s .5s both; color: #ffdd99; }
+  #h25 .eyebrow, #h25 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 26 – ARCHITECTURE GRID ===================== */
+  #h26 .bg { animation: h26-grid 5s ease-in-out forwards; }
+  @keyframes h26-grid {
+    0%   { transform: scale(1.2) rotate(-1deg); filter: contrast(1.4) brightness(0.7); }
+    100% { transform: scale(1) rotate(0deg); filter: contrast(1.1) brightness(1); }
+  }
+  #h26 .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridFade 5s ease-in forwards;
+  }
+  @keyframes gridFade {
+    0%   { opacity: 0.8; }
+    100% { opacity: 0.1; }
+  }
+  #h26 .overlay { background: linear-gradient(to top, rgba(5,5,20,0.85) 0%, transparent 55%); }
+  #h26 h1 { animation: slideLeft 1s .5s both; color: #c8e0ff; letter-spacing: 3px; font-weight: 300; }
+  #h26 .eyebrow, #h26 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 27 – ART COLOR SPLASH ===================== */
+  #h27 .bg { animation: h27-splash 5s ease-in-out forwards; }
+  @keyframes h27-splash {
+    0%   { transform: scale(1.1); filter: saturate(0) brightness(0.6); }
+    40%  { filter: saturate(0.5) brightness(0.8); }
+    100% { transform: scale(1.02); filter: saturate(2) brightness(1.1); }
+  }
+  #h27 .overlay { background: linear-gradient(135deg, rgba(60,0,80,0.6) 0%, rgba(0,0,0,0.5) 100%); }
+  #h27 h1 { animation: fadeUp 1s .8s both; color: #ff88ff; font-style: italic; }
+  #h27 .eyebrow, #h27 p { animation: fadeUp 1s 1s both; }
+
+  /* ===================== HERO 28 – GAMING NEON ===================== */
+  #h28 .bg { animation: h28-neon 5s ease-in-out forwards; }
+  @keyframes h28-neon {
+    0%   { transform: scale(1.05); filter: brightness(0.4) saturate(2) hue-rotate(0deg); }
+    25%  { filter: brightness(0.6) saturate(2.5) hue-rotate(30deg); }
+    50%  { filter: brightness(0.8) saturate(3) hue-rotate(-20deg); }
+    100% { transform: scale(1); filter: brightness(1) saturate(2) hue-rotate(0deg); }
+  }
+  #h28 .scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: rgba(0,255,120,0.5);
+    animation: scanMove 2.5s linear 2;
+    box-shadow: 0 0 8px rgba(0,255,120,0.8);
+  }
+  @keyframes scanMove {
+    0%   { top: 0; }
+    100% { top: 100%; }
+  }
+  #h28 .overlay { background: linear-gradient(to top, rgba(0,10,20,0.85) 0%, transparent 55%); }
+  #h28 h1 { animation: fadeUp 1s .4s both; color: #00ff88; text-shadow: 0 0 15px #00ff88; }
+  #h28 .eyebrow, #h28 p { animation: fadeUp 1s .6s both; }
+
+  /* ===================== HERO 29 – VINTAGE FILM ===================== */
+  #h29 .bg { animation: h29-vintage 5s ease-in-out forwards; }
+  @keyframes h29-vintage {
+    0%   { transform: scale(1.08); filter: sepia(0.8) contrast(1.3) brightness(0.7); }
+    100% { transform: scale(1); filter: sepia(0.4) contrast(1.1) brightness(1); }
+  }
+  #h29 .grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    background-size: 256px;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+  }
+  #h29 .overlay { background: linear-gradient(to top, rgba(30,15,0,0.8) 0%, transparent 55%); }
+  #h29 h1 { animation: fadeUp 1s .5s both; color: #f0d898; font-style: italic; font-weight: 300; letter-spacing: 4px; }
+  #h29 .eyebrow, #h29 p { animation: fadeUp 1s .7s both; }
+
+  /* ===================== HERO 30 – CYBERPUNK ===================== */
+  #h30 .bg { animation: h30-cyber 5s steps(1) forwards; }
+  @keyframes h30-cyber {
+    0%   { transform: scale(1.05); filter: brightness(0.5) hue-rotate(0deg) saturate(3); }
+    5%   { transform: translate(4px,0) scale(1.05); }
+    6%   { transform: translate(-4px,0) scale(1.05); }
+    7%   { transform: translate(0,0) scale(1.05); }
+    50%  { filter: brightness(0.8) hue-rotate(30deg) saturate(3); }
+    100% { transform: scale(1.01); filter: brightness(1) hue-rotate(0deg) saturate(2.5); }
+  }
+  #h30 .cyber-lines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,255,255,0.03) 2px,
+      rgba(0,255,255,0.03) 4px
+    );
+    animation: cyberFlicker 5s steps(1) forwards;
+  }
+  @keyframes cyberFlicker {
+    0%,100% { opacity: 0.8; }
+    5%       { opacity: 0.2; }
+    6%       { opacity: 1; }
+    50%      { opacity: 0.6; }
+  }
+  #h30 .overlay { background: linear-gradient(to top, rgba(0,10,20,0.9) 0%, transparent 55%); }
+  #h30 h1 { animation: glitchText 5s forwards; color: #00ffff; text-shadow: 2px 0 #ff0080, -2px 0 #00ffff; letter-spacing: 1px; }
+  #h30 .eyebrow, #h30 p { animation: fadeUp 1s .4s both; color: rgba(0,255,200,0.8); }
+
+  /* ===================== APPLE 3D PHOTO HEROES (1–10) ===================== */
+
+  .hero .scene { position: absolute; inset: 0; overflow: hidden; }
+
+  .hero .bg-layer {
+    position: absolute;
+    inset: -8%;
+    transform-origin: center;
+  }
+  .hero .bg-layer img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero .light-flare {
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.13) 50%, transparent 75%);
+    animation: flare-sweep 1.6s cubic-bezier(0.16,1,0.3,1) forwards;
+    pointer-events: none;
+  }
+  @keyframes flare-sweep {
+    from { transform: translateX(-130%) skewX(-15deg); }
+    to   { transform: translateX(230%) skewX(-15deg); }
+  }
+
+  @keyframes ai-a {
+    from { transform: perspective(900px) rotateX(8deg) rotateY(-6deg) scale(1.12); filter: brightness(0.45) blur(3px); }
+    to   { transform: perspective(900px) rotateX(0deg) rotateY(0deg)  scale(1);    filter: brightness(1)    blur(0);   }
+  }
+  @keyframes ai-b {
+    from { transform: perspective(900px) rotateX(-6deg) rotateY(8deg) scale(1.12); filter: brightness(0.40) blur(4px); }
+    to   { transform: perspective(900px) rotateX(0deg)  rotateY(0deg) scale(1);    filter: brightness(1)    blur(0);   }
+  }
+  @keyframes ai-c {
+    from { transform: perspective(900px) rotateY(-15deg) scale(1.10); filter: brightness(0.45) blur(2px); }
+    to   { transform: perspective(900px) rotateY(0deg)   scale(1);    filter: brightness(1)    blur(0);   }
+  }
+
+  @keyframes apple-float {
+    0%,100% { transform: perspective(900px) rotateX(0deg)    rotateY(0deg);    }
+    33%      { transform: perspective(900px) rotateX(1.2deg)  rotateY(-0.8deg); }
+    66%      { transform: perspective(900px) rotateX(-0.6deg) rotateY(1.2deg);  }
+  }
+
+  #h1 .bg-layer, #h4 .bg-layer, #h7 .bg-layer, #h10 .bg-layer {
+    animation: ai-a 1.4s cubic-bezier(0.16,1,0.3,1) forwards,
+               apple-float 9s 1.4s ease-in-out infinite;
+  }
+  #h2 .bg-layer, #h5 .bg-layer, #h8 .bg-layer {
+    animation: ai-b 1.4s cubic-bezier(0.16,1,0.3,1) forwards,
+               apple-float 10s 1.4s ease-in-out infinite;
+  }
+  #h3 .bg-layer, #h6 .bg-layer, #h9 .bg-layer {
+    animation: ai-c 1.5s cubic-bezier(0.16,1,0.3,1) forwards,
+               apple-float 8s 1.5s ease-in-out infinite;
+  }
+
+  /* ===================== SHARED ANIMATIONS ===================== */
+  @keyframes fadeUp {
+    0%   { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideLeft {
+    0%   { opacity: 0; transform: translateX(40px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="progress-wrap"><div id="progress-bar"></div></div>
+
+  <!-- HERO 1 – NATURE -->
+  <div class="hero active" id="h1">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&h=900&fit=crop&auto=format&q=80" alt="Forest"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Natur &amp; Abenteuer</span>
+      <h1>Into The Wild</h1>
+      <p class="sub">Entdecke die ursprüngliche Kraft der Natur. Atemberaubende Landschaften, unberührte Wälder und der Duft von frischer Erde – erlebe echte Freiheit.</p>
+      <span class="cta">Jetzt entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 2 – CITY -->
+  <div class="hero" id="h2">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&h=900&fit=crop&auto=format&q=80" alt="City Night"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Urban Living</span>
+      <h1>City Never Sleeps</h1>
+      <p class="sub">Millionen Lichter, eine Geschichte. Das Pulsieren der Großstadt ist dein Rhythmus – hier entstehen die Ideen von morgen.</p>
+      <span class="cta">Mehr erfahren →</span>
+    </div>
+  </div>
+
+  <!-- HERO 3 – FASHION -->
+  <div class="hero" id="h3">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=900&fit=crop&auto=format&q=80" alt="Fashion"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="curtain"></div>
+    <div class="overlay">
+      <span class="eyebrow">New Collection</span>
+      <h1>Own The Look</h1>
+      <p class="sub">Mode ist mehr als Kleidung – sie ist deine lauteste Aussage. Entdecke unsere neue Kollektion, die Stil und Haltung vereint.</p>
+      <span class="cta">Kollektion ansehen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 4 – FOOD -->
+  <div class="hero" id="h4">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=900&fit=crop&auto=format&q=80" alt="Food"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Gourmet Experience</span>
+      <h1>Pure Pleasure</h1>
+      <p class="sub">Jeder Bissen ist ein Erlebnis für die Sinne. Frische Zutaten, leidenschaftlich zubereitet – so schmeckt echter Genuss.</p>
+      <span class="cta">Zum Menü →</span>
+    </div>
+  </div>
+
+  <!-- HERO 5 – TECH -->
+  <div class="hero" id="h5">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=900&fit=crop&auto=format&q=80" alt="Tech"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Innovation 2025</span>
+      <h1>Future Is Now</h1>
+      <p class="sub">Die nächste Generation digitaler Lösungen ist bereits hier. Smarter, schneller, vernetzter – erlebe Technologie, die dein Leben verändert.</p>
+      <span class="cta">Produkt entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 6 – OCEAN -->
+  <div class="hero" id="h6">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=500&h=900&fit=crop&auto=format&q=80" alt="Ocean"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Ocean Collection</span>
+      <h1>Deep Blue Soul</h1>
+      <p class="sub">Das Meer kennt keine Grenzen – genau wie du. Tauche ein in eine Welt aus Tiefe, Stille und grenzenloser Weite.</p>
+      <span class="cta">Kollektion entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 7 – FITNESS -->
+  <div class="hero" id="h7">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=900&fit=crop&auto=format&q=80" alt="Fitness"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Performance Series</span>
+      <h1>No Pain No Gain</h1>
+      <p class="sub">Dein Körper ist zu mehr fähig, als du glaubst. Unsere Performance-Linie begleitet dich durch jedes Training – von warm-up bis cool-down.</p>
+      <span class="cta">Training starten →</span>
+    </div>
+  </div>
+
+  <!-- HERO 8 – LUXURY -->
+  <div class="hero" id="h8">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=900&fit=crop&auto=format&q=80" alt="Luxury"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="shimmer"></div>
+    <div class="overlay">
+      <span class="eyebrow">Premium Lifestyle</span>
+      <h1>Pure Gold</h1>
+      <p class="sub">Qualität ist keine Entscheidung – sie ist ein Anspruch. Erlebe Produkte, die für diejenigen gemacht wurden, die keine Kompromisse eingehen.</p>
+      <span class="cta">Exklusiv shoppen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 9 – NIGHTLIFE -->
+  <div class="hero" id="h9">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&h=900&fit=crop&auto=format&q=80" alt="Night Concert"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="overlay">
+      <span class="eyebrow">Nightlife &amp; Events</span>
+      <h1>Feel The Beat</h1>
+      <p class="sub">Die Nacht gehört den Mutigen. Erlebe unvergessliche Momente, die du mit keinem anderen teilen kannst – und die du niemals vergessen wirst.</p>
+      <span class="cta">Events entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 10 – ADVENTURE -->
+  <div class="hero" id="h10">
+    <div class="scene">
+      <div class="bg-layer"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&h=900&fit=crop&auto=format&q=80" alt="Mountain"></div>
+      <div class="light-flare"></div>
+    </div>
+    <div class="reveal"></div>
+    <div class="overlay">
+      <span class="eyebrow">Outdoor &amp; Expedition</span>
+      <h1>Reach New Heights</h1>
+      <p class="sub">Jeder Gipfel beginnt mit dem ersten Schritt. Unsere Outdoor-Ausrüstung begleitet dich, wenn der Weg aufhört und das Abenteuer beginnt.</p>
+      <span class="cta">Ausrüstung ansehen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 11 – MINIMAL -->
+  <div class="hero" id="h11">
+    <div class="bg" style="background: linear-gradient(160deg,#1c1c1c 0%,#444 50%,#111 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Minimal Design</span>
+      <h1>Less Is More</h1>
+      <p class="sub">Stille ist die lauteste Aussage. Reduziert auf das Wesentliche – Produkte, die durch ihre Einfachheit überzeugen und zeitlos bleiben.</p>
+      <span class="cta">Sortiment entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 12 – STREET -->
+  <div class="hero" id="h12">
+    <div class="bg" style="background: linear-gradient(160deg,#2e1a00 0%,#6e4000 40%,#4a2a00 70%,#180e00 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Street Culture</span>
+      <h1>Raw Energy</h1>
+      <p class="sub">Die Straße formt Charakter. Streetwear, die authentisch ist wie du – geboren aus der Kultur der Straße, gemacht für alle, die sie leben.</p>
+      <span class="cta">Street Drops ansehen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 13 – BEAUTY -->
+  <div class="hero" id="h13">
+    <div class="bg" style="background: linear-gradient(160deg,#6e0033 0%,#cc0066 40%,#ff3399 60%,#2a0014 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Beauty &amp; Skincare</span>
+      <h1>Bloom &amp; Glow</h1>
+      <p class="sub">Schönheit liegt im Mut, man selbst zu sein. Pflege deine Haut mit Produkten, die sichtbare Ergebnisse liefern – natürlich, effektiv, nachhaltig.</p>
+      <span class="cta">Beauty entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 14 – MOTIVATION -->
+  <div class="hero" id="h14">
+    <div class="bg" style="background: linear-gradient(160deg,#4a1500 0%,#cc4400 40%,#ff7700 60%,#ff2200 80%,#2a0800 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Mindset &amp; Growth</span>
+      <h1>Rise &amp; Conquer</h1>
+      <p class="sub">Jeder neue Tag ist deine zweite Chance. Starte mit der richtigen Einstellung – Produkte und Ressourcen, die dein volles Potenzial entfesseln.</p>
+      <span class="cta">Jetzt durchstarten →</span>
+    </div>
+  </div>
+
+  <!-- HERO 15 – BEACH -->
+  <div class="hero" id="h15">
+    <div class="bg" style="background: linear-gradient(160deg,#003366 0%,#0077cc 35%,#00bbff 55%,#ffaa00 75%,#ff5500 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Summer Collection</span>
+      <h1>Golden Hour</h1>
+      <p class="sub">Manche Momente verdienen es, für immer festgehalten zu werden. Unsere Sommerkollektion bringt den Strand direkt zu dir nach Hause.</p>
+      <span class="cta">Summer Shop →</span>
+    </div>
+  </div>
+
+  <!-- HERO 16 – DARK -->
+  <div class="hero" id="h16">
+    <div class="bg" style="background: linear-gradient(160deg,#051a08 0%,#0d3312 40%,#082210 70%,#020a04 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Dark Series</span>
+      <h1>Embrace The Dark</h1>
+      <p class="sub">Im Dunkel liegt eine eigene Schönheit. Unsere Dark Series ist für alle, die das Besondere suchen – jenseits des Gewöhnlichen.</p>
+      <span class="cta">Dark Series ansehen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 17 – SPRING -->
+  <div class="hero" id="h17">
+    <div class="bg" style="background: linear-gradient(160deg,#5e0033 0%,#aa2266 40%,#dd5588 60%,#2a0018 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Spring / Summer</span>
+      <h1>Cherry Dreams</h1>
+      <p class="sub">Die Schönheit liegt im flüchtigen Moment. Frische Farben, leichte Stoffe und das Gefühl von Frühlingsluft – die neue Frühjahrskollektion ist da.</p>
+      <span class="cta">Frühjahrskollektion →</span>
+    </div>
+  </div>
+
+  <!-- HERO 18 – COFFEE -->
+  <div class="hero" id="h18">
+    <div class="bg" style="background: linear-gradient(160deg,#3a1e00 0%,#7a4000 40%,#a05800 60%,#1e0e00 100%)"></div>
+    <div class="steam"></div>
+    <div class="overlay">
+      <span class="eyebrow">Coffee Culture</span>
+      <h1>First Sip First Win</h1>
+      <p class="sub">Der perfekte Tag beginnt mit dem richtigen Moment. Handverlesene Bohnen, sorgfältig geröstet – für alle, die Kaffee wirklich lieben.</p>
+      <span class="cta">Kaffee entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 19 – SPACE -->
+  <div class="hero" id="h19">
+    <div class="bg" style="background: linear-gradient(160deg,#00003a 0%,#000088 40%,#0000cc 60%,#000015 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Beyond Limits</span>
+      <h1>Infinite Beyond</h1>
+      <p class="sub">Das Universum hat nur eine Grenze: deine Vorstellung. Technologie, die so weit reicht wie deine Ambitionen – und noch weiter.</p>
+      <span class="cta">Weiter denken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 20 – GOLD LUXURY -->
+  <div class="hero" id="h20">
+    <div class="bg" style="background: linear-gradient(160deg,#2a1a00 0%,#7a5500 40%,#c89020 60%,#f0c040 70%,#1a1000 100%)"></div>
+    <div class="gold-overlay"></div>
+    <div class="overlay">
+      <span class="eyebrow">Gold Edition</span>
+      <h1>All That Glitters</h1>
+      <p class="sub">Luxus ist eine Haltung, kein Preis. Unsere Gold Edition verbindet handwerkliche Perfektion mit zeitlosem Design – für den besonderen Anspruch.</p>
+      <span class="cta">Gold Edition →</span>
+    </div>
+  </div>
+
+  <!-- HERO 21 – WINTER -->
+  <div class="hero" id="h21">
+    <div class="bg" style="background: linear-gradient(160deg,#001a3a 0%,#003d7a 40%,#0066bb 60%,#aae0ff 80%,#e8f6ff 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Winter Collection</span>
+      <h1>Ice &amp; Fire</h1>
+      <p class="sub">In der Stille des Winters liegt unendliche Kraft. Unsere Winterkollektion hält dich warm ohne auf Style zu verzichten.</p>
+      <span class="cta">Winter Collection →</span>
+    </div>
+  </div>
+
+  <!-- HERO 22 – DESERT -->
+  <div class="hero" id="h22">
+    <div class="bg" style="background: linear-gradient(160deg,#4a2000 0%,#a05000 40%,#e08000 60%,#ffaa00 75%,#ff6600 100%)"></div>
+    <div class="haze"></div>
+    <div class="overlay">
+      <span class="eyebrow">Desert Edition</span>
+      <h1>Sand &amp; Soul</h1>
+      <p class="sub">Die Wüste lehrt: wahre Stärke kommt von innen. Robust, authentisch und unverwüstlich – wie die Kollektion, die sie inspiriert hat.</p>
+      <span class="cta">Desert Look ansehen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 23 – CONCERT -->
+  <div class="hero" id="h23">
+    <div class="bg" style="background: linear-gradient(160deg,#1a0033 0%,#440088 40%,#8800cc 55%,#cc00ff 70%,#0a001a 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Music &amp; Events</span>
+      <h1>Live The Noise</h1>
+      <p class="sub">Musik ist der Rhythmus deiner Seele. Erlebe die Energie live und unvergesslich – unsere Event-Kollektion für Konzerte und Festivals.</p>
+      <span class="cta">Tickets &amp; Merch →</span>
+    </div>
+  </div>
+
+  <!-- HERO 24 – TRAVEL -->
+  <div class="hero" id="h24">
+    <div class="bg" style="background: linear-gradient(160deg,#001430 0%,#003366 35%,#0066aa 55%,#00aadd 70%,#66ccff 85%,#001020 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Travel &amp; Explore</span>
+      <h1>Beyond The Map</h1>
+      <p class="sub">Jede Reise beginnt dort, wo die Karte endet. Reise-Essentials und Gear für alle, die nicht nur ankommen wollen – sondern die Welt erleben.</p>
+      <span class="cta">Reise-Gear entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 25 – PETS -->
+  <div class="hero" id="h25">
+    <div class="bg" style="background: linear-gradient(160deg,#3a1a00 0%,#7a3800 40%,#aa5500 60%,#dd8833 75%,#ff9944 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">For Your Bestfriend</span>
+      <h1>Unconditional</h1>
+      <p class="sub">Wahre Liebe hat vier Pfoten. Premium-Produkte für deinen Hund oder deine Katze – weil sie das Beste verdienen, genauso wie du.</p>
+      <span class="cta">Pet Shop entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 26 – ARCHITECTURE -->
+  <div class="hero" id="h26">
+    <div class="bg" style="background: linear-gradient(160deg,#050514 0%,#0a0a33 40%,#1a1a55 60%,#2a2a88 75%,#0505aa 100%)"></div>
+    <div class="grid-lines"></div>
+    <div class="overlay">
+      <span class="eyebrow">Interior &amp; Design</span>
+      <h1>Form Follows</h1>
+      <p class="sub">Große Architektur erzählt Geschichten ohne Worte. Entdecke Interior-Design, das Räume in Erlebnisse verwandelt – präzise, modern, zeitlos.</p>
+      <span class="cta">Design entdecken →</span>
+    </div>
+  </div>
+
+  <!-- HERO 27 – ART -->
+  <div class="hero" id="h27">
+    <div class="bg" style="background: linear-gradient(160deg,#2a0040 0%,#6600aa 35%,#cc00cc 55%,#ff44ff 70%,#aa0088 85%,#100018 100%)"></div>
+    <div class="overlay">
+      <span class="eyebrow">Art &amp; Expression</span>
+      <h1>Color Your World</h1>
+      <p class="sub">Kunst ist die Sprache derer, die keine Worte brauchen. Handverlesene Kunstwerke und kreative Produkte für alle, die das Leben bunt sehen.</p>
+      <span class="cta">Kunstshop öffnen →</span>
+    </div>
+  </div>
+
+  <!-- HERO 28 – GAMING -->
+  <div class="hero" id="h28">
+    <div class="bg" style="background: linear-gradient(160deg,#000a05 0%,#001a0a 35%,#002a15 55%,#004422 70%,#00661a 85%,#000505 100%)"></div>
+    <div class="scan-line"></div>
+    <div class="overlay">
+      <span class="eyebrow">Gaming &amp; Esports</span>
+      <h1>Game On</h1>
+      <p class="sub">Jedes Level ist nur ein Schritt zur Legende. High-Performance Gaming-Equipment für Gamer, die nicht nur spielen – sondern gewinnen wollen.</p>
+      <span class="cta">Gaming Shop →</span>
+    </div>
+  </div>
+
+  <!-- HERO 29 – VINTAGE -->
+  <div class="hero" id="h29">
+    <div class="bg" style="background: linear-gradient(160deg,#2a1a08 0%,#5a3818 40%,#7a5028 60%,#a06838 75%,#c08040 100%)"></div>
+    <div class="grain"></div>
+    <div class="overlay">
+      <span class="eyebrow">Vintage &amp; Retro</span>
+      <h1>Timeless Frames</h1>
+      <p class="sub">Manche Momente verdienen kein Filter. Kuratierte Vintage-Stücke mit echter Geschichte – für alle, die Stil über Trends stellen.</p>
+      <span class="cta">Vintage Shop →</span>
+    </div>
+  </div>
+
+  <!-- HERO 30 – CYBERPUNK -->
+  <div class="hero" id="h30">
+    <div class="bg" style="background: linear-gradient(160deg,#000a15 0%,#001530 35%,#00253a 55%,#003348 70%,#004455 85%,#000508 100%)"></div>
+    <div class="cyber-lines"></div>
+    <div class="overlay">
+      <span class="eyebrow">Cyber &amp; Tech</span>
+      <h1>Jack In</h1>
+      <p class="sub">Die Zukunft gehört denen, die jetzt einloggen. Smarte Gadgets und digitale Tools für alle, die der Zeit einen Schritt voraus sind.</p>
+      <span class="cta">Tech Shop →</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const heroes = [...document.querySelectorAll('.hero')];
+  const bar = document.getElementById('progress-bar');
+  let current = 0;
+  let timer = null;
+  let startTime = null;
+  let rafId = null;
+
+  function show(idx) {
+    heroes[current].classList.remove('active');
+    current = (idx + heroes.length) % heroes.length;
+    const el = heroes[current];
+
+    // Reset animations by clone trick
+    const clone = el.cloneNode(true);
+    el.parentNode.replaceChild(clone, el);
+    heroes[current] = clone;
+    heroes[current].classList.add('active');
+
+    // Progress bar
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+    cancelAnimationFrame(rafId);
+    clearTimeout(timer);
+
+    startTime = performance.now();
+    function animBar(now) {
+      const elapsed = now - startTime;
+      const pct = Math.min(elapsed / 5000 * 100, 100);
+      bar.style.width = pct + '%';
+      if (pct < 100) {
+        rafId = requestAnimationFrame(animBar);
+      }
+    }
+    rafId = requestAnimationFrame(animBar);
+
+    timer = setTimeout(() => next(), 5000);
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  // Init
+  show(0);
+</script>
+</body>
+</html>
 
